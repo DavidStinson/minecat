@@ -45,18 +45,18 @@ class Cell {
     this.isRevealed = isRevealed
     this.neighbors = neighbors
   }
-	isEdge() {
-		if (
-			xcor === 0 ||
-			xcor === columns - 1 ||
-			ycor === 0 ||
-			ycor == rows - 1
-		) {
-			return true
-		}
-		return false
-	}
-  countNeighborBombs() {
+  isEdge() {
+    if (
+      this.xcor === 0 ||
+      this.xcor === columns - 1 ||
+      this.ycor === 0 ||
+      this.ycor == rows - 1
+    ) {
+      return true
+    }
+    return false
+  }
+  countNeighborsWithBombs() {
     let neighborBombCount = 0
     this.neighbors.forEach(neighbor => {
       if (cells[neighbor].hasBomb) neighborBombCount++
@@ -85,9 +85,6 @@ const gameboardEl = document.querySelector('#gameboard')
 gameboardEl.addEventListener('click', handleCellClick)
 gameboardEl.addEventListener('auxclick', handleCellAuxClick)
 mineCatEl.addEventListener('click', endGame)
-// listen for click on any cell to trigger handleCellClick
-// listen for right click on any cell to trigger handleCellAltClick
-// listen for click on emoji man to trigger checkForWin
 
 /*-----------------------------------------------------------------------------
 ================================= Functions ===================================
@@ -97,11 +94,10 @@ mineCatEl.addEventListener('click', endGame)
 /* set everything to default
 	*EVENTUALLY* Querry the user for everything, or query them to choose a 
 	*difficulty
-	call cellBuilder
-	call 
 	call render */
 function init() {
-  /* 2 rows and columns are added compared to what the user inputs, because the first and last of each are hidden from the user view*/
+	/* 2 rows and columns are added compared to what the user inputs, because the 
+	first and last of each are hidden from the user view*/
   // Don't allow user to set less than 12 columns
   rows = 10
   columns = 14
@@ -111,14 +107,17 @@ function init() {
   winLoss = cellCount = cellsWithBombs = 0
   cells = []
   boardBuilder()
-  cellBuilder()
+	cellBuilder()
 }
 
 function boardBuilder() {
-  /* Determine the height of the bounding box with the number of user facing rows, multiplied by the size of each cell, plus the height of all the elements within the bounding box. Do the same for the width using the columns. */
+  /* Determine the height of the bounding box with the number of user facing 
+rows, multiplied by the size of each cell, plus the height of all the elements
+within the bounding box. Do the same for the width using the columns. */
   boundingEl.style.height = (rows - 2) * 25 + 107 + 4 + 'px'
   boundingEl.style.width = (columns - 2) * 25 + 10 + 4 + 'px'
-  /* Determine the height of the board with the number of user facing rows, multiplied by the size of each cell. Do the same for the width using the columns */
+  /* Determine the height of the board with the number of user facing rows,
+	multiplied by the size of each cell. Do the same for the width using the columns */
   gameboardEl.style.columns = (rows - 2) * 25 + 'px'
   gameboardEl.style.width = (columns - 2) * 25 + 'px'
 }
@@ -152,7 +151,8 @@ function cellBuilder() {
           cellCount + columns + 1,
         ]
       )
-      /* Places cells onto the board, places a bomb in any cell not revealed on the board to remove literal edge cases in bomb placement logic */
+      /* Places cells onto the board, places a bomb in any cell not revealed on
+			the board to remove literal edge cases in bomb placement logic */
       if (newCell.isEdge()) {
         // Fill outside edges with bombs, don't show them to the player
         newCell.hasBomb = true
@@ -180,15 +180,16 @@ function plantBombs() {
       document.getElementById(cells[cellId].id).textContent = 'b'
     }
   }
-  //Prevent the edge case of a 9 bombs within a 3x3 area (or 6 bombs within a 2x3 area around the edges OR 4 bombs within a 2x2 area in the corners)
+  /*Prevent the edge case of a 9 bombs within a 3x3 area (or 6 bombs within
+		2x3 area around the edges OR 4 bombs within a 2x2 area in the corners)*/
   cells.forEach(cell => {
     if (!cell.isEdge()) {
       if (cell.hasBomb) {
         if (cell.countNeighborsWithBombs() === 8) {
           cell.hasBomb = false
           cellsWithBombs--
-					document.getElementById(cell.id).textContent = ''
-					//Round and round we go
+          document.getElementById(cell.id).textContent = ''
+          //Round and round we go
           plantBombs()
         }
       }
@@ -222,11 +223,7 @@ Fill cells with a number and mark them as revealed. We are now done with edges*/
 			If player has clicked on a bomb, reveal all the bombs
 			render*/
 
-function handleCellClick(evnt) {
-	if (evnt.target) {
-		
-	}
-}
+function handleCellClick(evnt) {}
 
 // handleCellAltClick
 /*If player has any remaining flags, place a flag, if no remaining flags flash the flag counter
