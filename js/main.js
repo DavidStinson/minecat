@@ -25,10 +25,11 @@ let cells = null
 		*/
 
 class Cell {
-  constructor(id, xcor, ycor, bomb, flag, revealed, neighbors) {
+  constructor(id, xcor, ycor, number, bomb, flag, revealed, neighbors) {
     this.id = id
     this.xcor = xcor
     this.ycor = ycor
+    this.number = number
     this.bomb = bomb
     this.flag = flag
     this.revealed = revealed
@@ -46,15 +47,10 @@ class Cell {
       return false
     }
   }
-  // Work on this later
   neighborsAllHaveBombs() {
     let neighborBombCount = 0
-    neighbors.forEach(neighbor => {
-      if (this.neighbors) {
-        neighborBombCount++
-      }
-    })
-    if (neighborBombCount === 8) this.bomb = false
+    neighbors.forEach(neighbor => {if (neighbor.bomb) neighborBombCount ++})
+    return (neighborBombCount === 8 ? true : false)
   }
   // Also work on this later
   neighborsAreBlank() {}
@@ -96,12 +92,13 @@ mineCatEl.addEventListener('click', endGame)
 function init() {
   /* 2 rows and columns are added compared to what the user inputs, because the first and last of each are hidden from the user view*/
   // Don't allow user to set less than 12 columns
-  rows = 40
+  rows = 10
   columns = 14
-  bombs = flags = 10
+  flags = 20
+  bombs = 20
   time = 999
   winLoss = 0
-  cellCount = 1
+  cellCount = 0
   cells = []
   boardBuilder()
   cellBuilder()
@@ -117,8 +114,7 @@ function boardBuilder() {
 }
 
 // cellBuilder
-/*	build rows and columns
-			build 2 extra of each and fill the outsides with bombs. This removes all edge logic around bomb placement.
+/*	
 		fill with bombs
 			If a cells neighbors are all bombs, it cannot be a bomb.
 		Remove all edge bombs.
@@ -127,26 +123,51 @@ function boardBuilder() {
 function cellBuilder() {
   for (let row = 0; row < rows; row++) {
     for (let column = 0; column < columns; column++) {
-      let newCell = new Cell(cellCount, column, row, false, false, false, [
-        cellCount - columns - 1,
-        cellCount - columns,
-        cellCount - columns + 1,
-        cellCount - 1,
-        cellCount + 1,
-        cellCount + columns - 1,
-        cellCount + columns,
-        cellCount + columns + 1,
-      ])
+      let newCell = new Cell(
+        cellCount,
+        column,
+        row,
+        null,
+        false,
+        false,
+        false,
+        [
+          cellCount - columns - 1,
+          cellCount - columns,
+          cellCount - columns + 1,
+          cellCount - 1,
+          cellCount + 1,
+          cellCount + columns - 1,
+          cellCount + columns,
+          cellCount + columns + 1,
+        ]
+      )
+      /* Places cells onto the board, places a bomb in any cell not revealed on the board to remove literal edge cases in bomb placement logic */
       if (newCell.edge() === false) {
         console.log(newCell.id, newCell.xcor, newCell.ycor)
         let newCellEl = document.createElement('div')
         newCellEl.setAttribute('id', cellCount)
         newCellEl.classList.add('cell')
-        newCellEl.textContent = cellCount
         gameboardEl.appendChild(newCellEl)
+      } else {
+        newCell.bomb = true
+        console.log(newCell.id + ' has a bomb')
       }
-      cells.push = newCell
+      // From this point, logic is carried out using the cells array
+      cells.push(newCell)
       cellCount++
+    }
+  }
+  cellCount--
+  plantBombs()
+}
+
+function plantBombs() {
+  let cellsWithBombs = 0
+  while (cellsWithBombs < bombs) {
+    cellId = getRandomIntInclusive(0, cells.length - 1)
+    if (!cells[cellId].bomb) {
+			if (!cells[cellId].neighborsAllHaveBombs())
     }
   }
 }
@@ -171,5 +192,11 @@ function endGame() {}
 		render framing
 		render countdown
 		render emoji button */
+
+function getRandomIntInclusive(minNum, maxNum) {
+  minNum = Math.ceil(minNum)
+  maxNum = Math.floor(maxNum)
+  return Math.floor(Math.random() * (maxNum - minNum + 1)) + minNum
+}
 
 init()
