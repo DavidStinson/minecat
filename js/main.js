@@ -26,33 +26,42 @@ let cellsWithBombs = null
 		*/
 
 class Cell {
-  constructor(id, xcor, ycor, number, bomb, flag, revealed, neighbors) {
+  constructor(
+    id,
+    xcor,
+    ycor,
+    neighboringBombs,
+    hasBomb,
+    hasFlag,
+    isRevealed,
+    neighbors
+  ) {
     this.id = id
     this.xcor = xcor
     this.ycor = ycor
-    this.number = number
-    this.bomb = bomb
-    this.flag = flag
-    this.revealed = revealed
+    this.neighboringBombs = neighboringBombs
+    this.hasBomb = hasBomb
+    this.hasFlag = hasFlag
+    this.isRevealed = isRevealed
     this.neighbors = neighbors
-    this.edge = function() {
-      if (
-        xcor === 0 ||
-        xcor === columns - 1 ||
-        ycor === 0 ||
-        ycor == rows - 1
-      ) {
-        return true
-      }
-      return false
-    }
   }
-  neighborsAllHaveBombs() {
+	isEdge() {
+		if (
+			xcor === 0 ||
+			xcor === columns - 1 ||
+			ycor === 0 ||
+			ycor == rows - 1
+		) {
+			return true
+		}
+		return false
+	}
+  countNeighborBombs() {
     let neighborBombCount = 0
     this.neighbors.forEach(neighbor => {
-      if (cells[neighbor].bomb) neighborBombCount++
+      if (cells[neighbor].hasBomb) neighborBombCount++
     })
-    return neighborBombCount === 8 ? true : false
+    return neighborBombCount
   }
   // Also work on this later
   neighborsAreBlank() {}
@@ -144,13 +153,14 @@ function cellBuilder() {
         ]
       )
       /* Places cells onto the board, places a bomb in any cell not revealed on the board to remove literal edge cases in bomb placement logic */
-      if (newCell.edge() === false) {
+      if (newCell.isEdge()) {
+        // Fill outside edges with bombs, don't show them to the player
+        newCell.hasBomb = true
+      } else {
         let newCellEl = document.createElement('div')
         newCellEl.setAttribute('id', cellCount)
         newCellEl.classList.add('cell')
         gameboardEl.appendChild(newCellEl)
-      } else {
-        newCell.bomb = true
       }
       // From this point, logic is carried out using the cells array
       cells.push(newCell)
@@ -164,36 +174,63 @@ function cellBuilder() {
 function plantBombs() {
   while (cellsWithBombs < bombs) {
     cellId = getRandomIntInclusive(0, cells.length - 1)
-    if (!cells[cellId].bomb) {
-      cells[cellId].bomb = true
+    if (!cells[cellId].hasBomb) {
+      cells[cellId].hasBomb = true
       cellsWithBombs++
       document.getElementById(cells[cellId].id).textContent = 'b'
     }
-	}
-	//Prevent the edge case of a 9 bombs within a 3x3 area (or 6 bombs within a 2x3 area around the edges OR 4 bombs within a 2x2 area in the corners)
+  }
+  //Prevent the edge case of a 9 bombs within a 3x3 area (or 6 bombs within a 2x3 area around the edges OR 4 bombs within a 2x2 area in the corners)
   cells.forEach(cell => {
-    if (!cell.edge()) {
-      if (cell.bomb) {
-        if (cell.neighborsAllHaveBombs()) {
-          cell.bomb = false
+    if (!cell.isEdge()) {
+      if (cell.hasBomb) {
+        if (cell.countNeighborsWithBombs() === 8) {
+          cell.hasBomb = false
           cellsWithBombs--
-          document.getElementById(cell.id).textContent = ''
+					document.getElementById(cell.id).textContent = ''
+					//Round and round we go
           plantBombs()
         }
       }
     }
-	})
-	placeNumbers()
+  })
+  placeNumbers()
+}
+
+function placeNumbers() {
+  /* Remove bombs from outside cells, they will interfere with number placement.
+Fill cells with a number and mark them as revealed. We are now done with edges*/
+  cells.forEach(cell => {
+    if (cell.isEdge()) {
+      cell.hasBomb = false
+      cell.neighboringBombs = 1
+      cell.isRevealed = true
+    }
+  })
+  cells.forEach(cell => {
+    if (!cell.isEdge()) {
+      if (!cell.hasBomb) {
+        cell.neighboringBombs = cell.countNeighborsWithBombs()
+        document.getElementById(cell.id).textContent = cell.neighboringBombs
+      }
+    }
+  })
 }
 
 // handleCellClick
 /*	call checkForLoss
-			If player has clicked on a bomb, reveal all the bombsrender*/
+			If player has clicked on a bomb, reveal all the bombs
+			render*/
 
-function handleCellClick() {}
+function handleCellClick(evnt) {
+	if (evnt.target) {
+		
+	}
+}
 
 // handleCellAltClick
-/*If player has any remaining flags, place a flag, if no remaining flags flash the flag counter*/
+/*If player has any remaining flags, place a flag, if no remaining flags flash the flag counter
+	render*/
 
 function handleCellAuxClick() {}
 
