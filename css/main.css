@@ -48,8 +48,8 @@ main {
 }
 
 #mine-cat {
-	margin: auto;
-	font-size: x-large;
+  margin: auto;
+  font-size: x-large;
 }
 
 #countdown {
@@ -73,4 +73,11 @@ main {
   box-shadow: inset 0 0 5px #000000;
   border: 0;
   margin: 0;
+  vertical-align: center;
+  text-align: center;
+  cursor: pointer;
+}
+
+.cell .revealed {
+  cursor: not-allowed;
 }

@@ -6,6 +6,7 @@ let columns = null
 let time = null
 let bombs = null
 let playerFlags = null
+let playerCells = null
 let cellCount = null
 let cells = null
 let cellsWithBombs = null
@@ -60,10 +61,13 @@ class Cell {
         if (!cell.hasFlag) {
           if (!cell.hasBomb) {
             if (cell.hasNeighboringBombs) {
+              document.getElementById(cell.id).style.background = 'orange'
               cell.isRevealed = true
             }
             if (!cell.hasNeighboringBombs) {
               cell.isRevealed = true
+              document.getElementById(cell.id).style.background = 'green'
+              console.log(cell.id + ' is reavealed')
               //Round and round we go
               cell.cascade()
             }
@@ -111,11 +115,12 @@ function init() {
   bombs = 10
   time = 999
   gameOver = cellCount = cellsWithBombs = 0
-  cells = []
+	cells = []
+	playerCells = (rows - 2) * (columns - 2)
   boardBuilder()
-	cellBuilder()
-	plantBombs()
-	placeNumbers()
+  cellBuilder()
+  plantBombs()
+  placeNumbers()
 }
 
 function boardBuilder() {
@@ -225,18 +230,23 @@ function handleCellClick(evnt) {
         if (cell.hasBomb) {
           cell.isRevealed = true
           gameOver = 1
-          endGame()
-        }
-        if (cell.hasNeighboringBombs) {
-          cell.isRevealed = true
-        }
-        if (!cell.hasNeighboringBombs) {
-          cell.isRevealed = true
-          cell.cascade()
+        } else {
+          if (cell.hasNeighboringBombs) {
+            console.log(cell.id + ' is reavealed')
+            document.getElementById(cell.id).style.background = 'orange'
+            cell.isRevealed = true
+            return
+          } else {
+            console.log(cell.id + ' is revealed')
+            document.getElementById(cell.id).style.background = 'green'
+            cell.isRevealed = true
+						cell.cascade()
+          }
         }
       }
     }
-  }
+	}
+	checkForEndGame()
 }
 
 function handleCellAuxClick(evnt) {
@@ -254,7 +264,10 @@ function handleCellAuxClick(evnt) {
   }
 }
 
-function endGame() {
+function checkForEndGame() {
+  cells.forEach(cell => {
+		if (!cell.isRevealed)
+	})
   console.log('Look at that, YOU LOST!')
 }
 
