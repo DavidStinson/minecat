@@ -1,80 +1,175 @@
 /*-----------------------------------------------------------------------------
-/*-------------------------------- Variables --------------------------------*/
+================================== Variables ==================================
 -----------------------------------------------------------------------------*/
-let rows = null;
-let collumns = null;
-let time = null;
-let bombs = null;
-let winLoss = 0;
-let flags = null;
-
+let rows = null
+let collumns = null
+let time = null
+let bombs = null
+let winLoss = null
+let flags = null
+let cellCount = null
+let cells = null
 
 /*-----------------------------------------------------------------------------
-/*--------------------------------- Objects ---------------------------------*/
+=================================== Objects ===================================
 -----------------------------------------------------------------------------*/
 // Object constructor for cells
-/*  xcor use for logic and css
-    ycor use for logic and css
-    bomb
-    valu
-    flag
-    revealed */
+/*	id
+		xcor use for logic and css
+		ycor use for logic and css
+		bomb
+		flag
+		revealed
+		neighbors array
+		neighborsCheck
+		*/
 
-
+class Cell {
+  constructor(id, xcor, ycor, bomb, flag, revealed, neighbors) {
+    this.id = id
+    this.xcor = xcor
+    this.ycor = ycor
+    this.bomb = bomb
+    this.flag = flag
+    this.revealed = revealed
+    this.neighbors = neighbors
+    this.edge = function() {
+      if (
+        xcor === 0 ||
+        xcor === columns - 1 ||
+        ycor === 0 ||
+        ycor == rows - 1
+      ) {
+        console.log(this.id)
+        return true
+      }
+      return false
+    }
+  }
+  // Work on this later
+  neighborsAllHaveBombs() {
+    let neighborBombCount = 0
+    neighbors.forEach(neighbor => {
+      if (this.neighbors) {
+        neighborBombCount++
+      }
+    })
+    if (neighborBombCount === 8) this.bomb = false
+  }
+  // Also work on this later
+  neighborsAreBlank() {}
+}
 
 /*-----------------------------------------------------------------------------
-/*---------------------------------- Cache ----------------------------------*/
+==================================== Cache ====================================
 -----------------------------------------------------------------------------*/
-// cache all styled elements
 
+const boundingEl = document.querySelector('main')
+const titleEl = document.querySelector('#title')
+const flagCountEl = document.querySelector('#flag-count')
+const mineCatEl = document.querySelector('#mine-cat')
+const countdownEl = document.querySelector('#countdown')
+const gameboardEl = document.querySelector('#gameboard')
 
 /*-----------------------------------------------------------------------------
-/*============================= Event Listeners =============================*/
+=============================== Event Listeners ===============================
 -----------------------------------------------------------------------------*/
+
+gameboardEl.addEventListener('click', handleCellClick)
+gameboardEl.addEventListener('auxclick', handleCellAuxClick)
+mineCatEl.addEventListener('click', endGame)
 // listen for click on any cell to trigger handleCellClick
 // listen for right click on any cell to trigger handleCellAltClick
 // listen for click on emoji man to trigger checkForWin
 
-
 /*-----------------------------------------------------------------------------
-/*================================ Functions ==================================
+================================= Functions ===================================
 -----------------------------------------------------------------------------*/
 
 // init
-/*  set everything to default
-    *EVENTUALLY* Querry the user for everything, or query them to choose a 
-    *difficulty
-    call cellBuilder
-    call 
-    call render */
+/* set everything to default
+	*EVENTUALLY* Querry the user for everything, or query them to choose a 
+	*difficulty
+	call cellBuilder
+	call 
+	call render */
+function init() {
+  /* 2 rows and columns are added compared to what the user inputs, because the first and last of each are hidden from the user view*/
+  // Don't allow user to set less than 12 columns
+  rows = 40
+  columns = 14
+  bombs = flags = 10
+  time = 999
+  winLoss = 0
+  cellCount = 1
+  cells = []
+  boardBuilder()
+  cellBuilder()
+}
 
-
+function boardBuilder() {
+  /* Determine the height of the bounding box with the number of user facing rows, multiplied by the size of each cell, plus the height of all the elements within the bounding box. Do the same for the width using the columns. */
+  boundingEl.style.height = (rows - 2) * 25 + 100 + 4 + 'px'
+  boundingEl.style.width = (columns - 2) * 25 + 10 + 4 + 'px'
+  /* Determine the height of the board with the number of user facing rows, multiplied by the size of each cell. Do the same for the width using the columns */
+  gameboardEl.style.columns = (rows - 2) * 25 + 'px'
+  gameboardEl.style.width = (columns - 2) * 25 + 'px'
+}
 
 // cellBuilder
-/*  build rows and collumns 
-    fill with bombs
-        If there are edge conditions of places we can't place bombs, and don't
-        place bombs there
-    fill with numbers */
+/*	build rows and columns
+			build 2 extra of each and fill the outsides with bombs. This removes all edge logic around bomb placement.
+		fill with bombs
+			If a cells neighbors are all bombs, it cannot be a bomb.
+		Remove all edge bombs.
+		fill with numbers */
+
+function cellBuilder() {
+  for (let row = 0; row < rows; row++) {
+    for (let column = 0; column < columns; column++) {
+      let newCell = new Cell(cellCount, column, row, false, false, false, [
+        cellCount - columns - 1,
+        cellCount - columns,
+        cellCount - columns + 1,
+        cellCount - 1,
+        cellCount + 1,
+        cellCount + columns - 1,
+        cellCount + columns,
+        cellCount + columns + 1,
+      ])
+      if (newCell.edge() === false) {
+        console.log(newCell.id, newCell.xcor, newCell.ycor)
+        let newCellEl = document.createElement('div')
+        newCellEl.setAttribute('id', cellCount)
+        newCellEl.classList.add('cell')
+        newCellEl.textContent = cellCount
+        gameboardEl.appendChild(newCellEl)
+      }
+      cells.push = newCell
+      cellCount++
+    }
+  }
+}
 
 // handleCellClick
-/*  call checkForLoss
-    If player has clicked on a bomb, reveal all the bombsrender*/
+/*	call checkForLoss
+			If player has clicked on a bomb, reveal all the bombsrender*/
+
+function handleCellClick() {}
 
 // handleCellAltClick
-/*  If player has any remaining flags, place a flag, if no remaining flags flash the flag counter
+/*If player has any remaining flags, place a flag, if no remaining flags flash the flag counter*/
 
-// checkForWin
-/*  if player has alt clicked all correct bomb locations
-    */
+function handleCellAuxClick() {}
 
-// checkForLoss
-    /* if player clicked on a bomb they lost */
+function endGame() {}
 
 // render
 //  *EVENTUALLY* if the game is starting, query the user for number of rows,
 //  *columns, bombs, and time they want to have
 /*  Render cells
-    render framing
-    render countdown
-    render emoji button */ 
+		render framing
+		render countdown
+		render emoji button */
+
+init()
