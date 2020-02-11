@@ -11,6 +11,7 @@ let cellCount = null
 let cells = null
 let cellsWithBombs = null
 let gameOver = null
+let cellsToBeRevealed = null
 
 /*-----------------------------------------------------------------------------
 =================================== Objects ===================================
@@ -95,7 +96,7 @@ const gameboardEl = document.querySelector('#gameboard')
 
 gameboardEl.addEventListener('click', handleCellClick)
 gameboardEl.addEventListener('auxclick', handleCellAuxClick)
-mineCatEl.addEventListener('click', endGame)
+mineCatEl.addEventListener('click', checkForEndGame)
 
 /*-----------------------------------------------------------------------------
 ================================= Functions ===================================
@@ -115,8 +116,7 @@ function init() {
   bombs = 10
   time = 999
   gameOver = cellCount = cellsWithBombs = 0
-	cells = []
-	playerCells = (rows - 2) * (columns - 2)
+  cells = []
   boardBuilder()
   cellBuilder()
   plantBombs()
@@ -229,24 +229,23 @@ function handleCellClick(evnt) {
       if (!cell.isRevealed) {
         if (cell.hasBomb) {
           cell.isRevealed = true
-          gameOver = 1
+          return
         } else {
           if (cell.hasNeighboringBombs) {
             console.log(cell.id + ' is reavealed')
             document.getElementById(cell.id).style.background = 'orange'
             cell.isRevealed = true
-            return
           } else {
             console.log(cell.id + ' is revealed')
             document.getElementById(cell.id).style.background = 'green'
             cell.isRevealed = true
-						cell.cascade()
+            cell.cascade()
           }
         }
+        checkForEndGame()
       }
     }
-	}
-	checkForEndGame()
+  }
 }
 
 function handleCellAuxClick(evnt) {
@@ -265,10 +264,23 @@ function handleCellAuxClick(evnt) {
 }
 
 function checkForEndGame() {
+  cellsToBeRevealed = null
   cells.forEach(cell => {
-		if (!cell.isRevealed)
-	})
-  console.log('Look at that, YOU LOST!')
+    if (!cell.isRevealed) {
+      cellsToBeRevealed++
+    }
+  })
+  console.log(cellsToBeRevealed, bombs)
+  if (cellsToBeRevealed === bombs) {
+    if (!gameOver) {
+      gameOver = 1
+    }
+    if (gameOver) {
+      cells.forEach(cell => {
+        cell.isRevealed = true
+      })
+    }
+  }
 }
 
 // render
