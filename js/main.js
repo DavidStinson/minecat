@@ -5,11 +5,11 @@ let rows = null
 let collumns = null
 let time = null
 let bombs = null
-let winLoss = null
 let flags = null
 let cellCount = null
 let cells = null
 let cellsWithBombs = null
+let gameOver = null
 
 /*-----------------------------------------------------------------------------
 =================================== Objects ===================================
@@ -30,18 +30,18 @@ class Cell {
     id,
     xcor,
     ycor,
-    neighboringBombs,
     hasBomb,
     hasFlag,
+    hasNeighboringBombs,
     isRevealed,
     neighbors
   ) {
     this.id = id
     this.xcor = xcor
     this.ycor = ycor
-    this.neighboringBombs = neighboringBombs
     this.hasBomb = hasBomb
     this.hasFlag = hasFlag
+    this.hasNeighboringBombs = hasNeighboringBombs
     this.isRevealed = isRevealed
     this.neighbors = neighbors
   }
@@ -96,7 +96,7 @@ mineCatEl.addEventListener('click', endGame)
 	*difficulty
 	call render */
 function init() {
-	/* 2 rows and columns are added compared to what the user inputs, because the 
+  /* 2 rows and columns are added compared to what the user inputs, because the 
 	first and last of each are hidden from the user view*/
   // Don't allow user to set less than 12 columns
   rows = 10
@@ -104,10 +104,10 @@ function init() {
   flags = 20
   bombs = 10
   time = 999
-  winLoss = cellCount = cellsWithBombs = 0
+  gameOver = cellCount = cellsWithBombs = 0
   cells = []
   boardBuilder()
-	cellBuilder()
+  cellBuilder()
 }
 
 function boardBuilder() {
@@ -173,7 +173,7 @@ function cellBuilder() {
 
 function plantBombs() {
   while (cellsWithBombs < bombs) {
-    cellId = getRandomIntInclusive(0, cells.length - 1)
+    let cellId = getRandomIntInclusive(0, cells.length - 1)
     if (!cells[cellId].hasBomb) {
       cells[cellId].hasBomb = true
       cellsWithBombs++
@@ -204,15 +204,15 @@ Fill cells with a number and mark them as revealed. We are now done with edges*/
   cells.forEach(cell => {
     if (cell.isEdge()) {
       cell.hasBomb = false
-      cell.neighboringBombs = 1
+      cell.hasNeighboringBombs = 1
       cell.isRevealed = true
     }
   })
   cells.forEach(cell => {
     if (!cell.isEdge()) {
       if (!cell.hasBomb) {
-        cell.neighboringBombs = cell.countNeighborsWithBombs()
-        document.getElementById(cell.id).textContent = cell.neighboringBombs
+        cell.hasNeighboringBombs = cell.countNeighborsWithBombs()
+        document.getElementById(cell.id).textContent = cell.hasNeighboringBombs
       }
     }
   })
@@ -223,15 +223,40 @@ Fill cells with a number and mark them as revealed. We are now done with edges*/
 			If player has clicked on a bomb, reveal all the bombs
 			render*/
 
-function handleCellClick(evnt) {}
+function handleCellClick(evnt) {
+  let cell = cells[evnt.target.id]
+  if (!gameOver) {
+    if (!cell.hasFlag) {
+      if (cell.hasBomb) {
+        gameOver = 1
+        endGame()
+      }
+      if (cell.hasNeighboringBombs) {
+        console.log('this cell has neighboring bombs')
+      }
+    }
+  }
+}
 
 // handleCellAltClick
 /*If player has any remaining flags, place a flag, if no remaining flags flash the flag counter
 	render*/
 
-function handleCellAuxClick() {}
+function handleCellAuxClick(evnt) {
+  let cell = cells[evnt.target.id]
+  if (!gameOver) {
+    if (!cell.isRevealed) {
+      cell.hasFlag ? (cell.hasFlag = false) : (cell.hasFlag = true)
+      console.log(
+        cell.id + ' had a flag toggled on it. cell.hasFlag = ' + cell.hasFlag
+      )
+    }
+  }
+}
 
-function endGame() {}
+function endGame() {
+  console.log('Look at that, YOU LOST!')
+}
 
 // render
 //  *EVENTUALLY* if the game is starting, query the user for number of rows,
