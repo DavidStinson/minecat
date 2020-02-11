@@ -227,12 +227,17 @@ function handleCellClick(evnt) {
   let cell = cells[evnt.target.id]
   if (!gameOver) {
     if (!cell.hasFlag) {
-      if (cell.hasBomb) {
-        gameOver = 1
-        endGame()
-      }
-      if (cell.hasNeighboringBombs) {
-        console.log('this cell has neighboring bombs')
+			if(!cell.isRevealed) {
+      	if (cell.hasBomb) {
+					cell.isRevealed = true
+      	 	gameOver = 1
+      	 	endGame()
+				}
+				if (cell.hasNeighboringBombs) {
+					cell.isRevealed = true
+				}
+				if
+			
       }
     }
   }
@@ -247,9 +252,6 @@ function handleCellAuxClick(evnt) {
   if (!gameOver) {
     if (!cell.isRevealed) {
       cell.hasFlag ? (cell.hasFlag = false) : (cell.hasFlag = true)
-      console.log(
-        cell.id + ' had a flag toggled on it. cell.hasFlag = ' + cell.hasFlag
-      )
     }
   }
 }
@@ -265,6 +267,10 @@ function endGame() {
 		render framing
 		render countdown
 		render emoji button */
+
+function render() {
+	console.log("hey look, you're rendering!")
+}
 
 function getRandomIntInclusive(minNum, maxNum) {
   minNum = Math.ceil(minNum)
