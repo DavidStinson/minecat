@@ -113,7 +113,9 @@ function init() {
   gameOver = cellCount = cellsWithBombs = 0
   cells = []
   boardBuilder()
-  cellBuilder()
+	cellBuilder()
+	plantBombs()
+	placeNumbers()
 }
 
 function boardBuilder() {
@@ -193,7 +195,6 @@ function plantBombs() {
       }
     }
   })
-  placeNumbers()
 }
 
 function placeNumbers() {
