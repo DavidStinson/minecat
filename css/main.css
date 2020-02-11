@@ -3,7 +3,7 @@ main {
   margin: auto;
   display: grid;
   grid-template-columns: 5px auto 5px;
-  grid-template-rows: 5px 85px 5px auto 5px;
+  grid-template-rows: 5px 85px 12px auto 5px;
   grid-template-areas:
     '. . .'
     '. header .'
@@ -26,6 +26,7 @@ main {
 #sub-head {
   grid-area: sub-head;
   display: flex;
+  justify-content: space-around;
 }
 
 #title {
@@ -35,20 +36,26 @@ main {
 }
 
 #flag-count {
-  grid-area: flag-count;
   text-align: center;
   margin: auto;
+  flex-grow: 1;
+}
+
+#mine-cat-cage {
+  margin: auto;
+  flex-grow: 4;
+  text-align: center;
 }
 
 #mine-cat {
-  grid-area: mine-cat;
-  font-size: x-large;
+	margin: auto;
+	font-size: x-large;
 }
 
 #countdown {
-  grid-area: countdown;
   text-align: center;
   margin: auto;
+  flex-grow: 1;
 }
 
 #gameboard {

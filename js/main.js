@@ -41,7 +41,6 @@ class Cell {
         ycor === 0 ||
         ycor == rows - 1
       ) {
-        console.log(this.id)
         return true
       }
       return false
@@ -49,8 +48,10 @@ class Cell {
   }
   neighborsAllHaveBombs() {
     let neighborBombCount = 0
-    neighbors.forEach(neighbor => {if (neighbor.bomb) neighborBombCount ++})
-    return (neighborBombCount === 8 ? true : false)
+    this.neighbors.forEach(neighbor => {
+      if (neighbor.bomb) neighborBombCount++
+    })
+    return neighborBombCount === 8 ? true : false
   }
   // Also work on this later
   neighborsAreBlank() {}
@@ -93,7 +94,7 @@ function init() {
   /* 2 rows and columns are added compared to what the user inputs, because the first and last of each are hidden from the user view*/
   // Don't allow user to set less than 12 columns
   rows = 10
-  columns = 14
+  columns = 70
   flags = 20
   bombs = 20
   time = 999
@@ -106,7 +107,7 @@ function init() {
 
 function boardBuilder() {
   /* Determine the height of the bounding box with the number of user facing rows, multiplied by the size of each cell, plus the height of all the elements within the bounding box. Do the same for the width using the columns. */
-  boundingEl.style.height = (rows - 2) * 25 + 100 + 4 + 'px'
+  boundingEl.style.height = (rows - 2) * 25 + 107 + 4 + 'px'
   boundingEl.style.width = (columns - 2) * 25 + 10 + 4 + 'px'
   /* Determine the height of the board with the number of user facing rows, multiplied by the size of each cell. Do the same for the width using the columns */
   gameboardEl.style.columns = (rows - 2) * 25 + 'px'
@@ -144,14 +145,12 @@ function cellBuilder() {
       )
       /* Places cells onto the board, places a bomb in any cell not revealed on the board to remove literal edge cases in bomb placement logic */
       if (newCell.edge() === false) {
-        console.log(newCell.id, newCell.xcor, newCell.ycor)
         let newCellEl = document.createElement('div')
         newCellEl.setAttribute('id', cellCount)
         newCellEl.classList.add('cell')
         gameboardEl.appendChild(newCellEl)
       } else {
         newCell.bomb = true
-        console.log(newCell.id + ' has a bomb')
       }
       // From this point, logic is carried out using the cells array
       cells.push(newCell)
@@ -167,7 +166,11 @@ function plantBombs() {
   while (cellsWithBombs < bombs) {
     cellId = getRandomIntInclusive(0, cells.length - 1)
     if (!cells[cellId].bomb) {
-			if (!cells[cellId].neighborsAllHaveBombs())
+      if (!cells[cellId].neighborsAllHaveBombs()) {
+        cells[cellId].bomb = true
+        console.log(cells[cellId].id + ' now has a bomb')
+        cellsWithBombs++
+      }
     }
   }
 }
