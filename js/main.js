@@ -2,7 +2,7 @@
 ================================== Variables ==================================
 -----------------------------------------------------------------------------*/
 let rows = null
-let collumns = null
+let columns = null
 let time = null
 let bombs = null
 let playerFlags = null
@@ -64,6 +64,8 @@ class Cell {
             }
             if (!cell.hasNeighboringBombs) {
               cell.isRevealed = true
+              //Round and round we go
+              cell.cascade()
             }
           }
         }
@@ -214,11 +216,6 @@ Fill cells with a number and mark them as revealed. We are now done with edges*/
   })
 }
 
-// handleCellClick
-/*	call checkForLoss
-			If player has clicked on a bomb, reveal all the bombs
-			render*/
-
 function handleCellClick(evnt) {
   let cell = cells[evnt.target.id]
   if (!gameOver) {
@@ -241,10 +238,6 @@ function handleCellClick(evnt) {
   }
 }
 
-// handleCellAltClick
-/*If player has any remaining flags, place a flag, if no remaining flags flash the flag counter
-	render*/
-
 function handleCellAuxClick(evnt) {
   let cell = cells[evnt.target.id]
   if (!gameOver) {
@@ -253,8 +246,10 @@ function handleCellAuxClick(evnt) {
         cell.hasFlag
           ? ((cell.hasFlag = false), playerFlags++)
           : ((cell.hasFlag = true), playerFlags--)
-			}
-		}
+      }
+    } else {
+      //FLASH FLAG COUNTER HERE
+    }
   }
 }
 
