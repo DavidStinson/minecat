@@ -5,7 +5,7 @@ let rows = null
 let collumns = null
 let time = null
 let bombs = null
-let flags = null
+let playerFlags = null
 let cellCount = null
 let cells = null
 let cellsWithBombs = null
@@ -15,16 +15,6 @@ let gameOver = null
 =================================== Objects ===================================
 -----------------------------------------------------------------------------*/
 // Object constructor for cells
-/*	id
-		xcor use for logic and css
-		ycor use for logic and css
-		bomb
-		flag
-		revealed
-		neighbors array
-		neighborsCheck
-		*/
-
 class Cell {
   constructor(
     id,
@@ -63,8 +53,23 @@ class Cell {
     })
     return neighborBombCount
   }
-  // Also work on this later
-  neighborsAreBlank() {}
+  cascade() {
+    this.neighbors.forEach(neighbor => {
+      let cell = cells[neighbor]
+      if (!cell.isRevealed) {
+        if (!cell.hasFlag) {
+          if (!cell.hasBomb) {
+            if (cell.hasNeighboringBombs) {
+              cell.isRevealed = true
+            }
+            if (!cell.hasNeighboringBombs) {
+              cell.isRevealed = true
+            }
+          }
+        }
+      }
+    })
+  }
 }
 
 /*-----------------------------------------------------------------------------
@@ -91,17 +96,16 @@ mineCatEl.addEventListener('click', endGame)
 -----------------------------------------------------------------------------*/
 
 // init
-/* set everything to default
-	*EVENTUALLY* Querry the user for everything, or query them to choose a 
-	*difficulty
-	call render */
+/*
+ *EVENTUALLY* Querry the user for everything, or query them to choose a
+ *difficulty */
 function init() {
   /* 2 rows and columns are added compared to what the user inputs, because the 
 	first and last of each are hidden from the user view*/
   // Don't allow user to set less than 12 columns
   rows = 10
   columns = 14
-  flags = 20
+  playerFlags = 20
   bombs = 10
   time = 999
   gameOver = cellCount = cellsWithBombs = 0
@@ -117,17 +121,11 @@ within the bounding box. Do the same for the width using the columns. */
   boundingEl.style.height = (rows - 2) * 25 + 107 + 4 + 'px'
   boundingEl.style.width = (columns - 2) * 25 + 10 + 4 + 'px'
   /* Determine the height of the board with the number of user facing rows,
-	multiplied by the size of each cell. Do the same for the width using the columns */
+	multiplied by the size of each cell. Do the same for the width using the
+	columns */
   gameboardEl.style.columns = (rows - 2) * 25 + 'px'
   gameboardEl.style.width = (columns - 2) * 25 + 'px'
 }
-
-// cellBuilder
-/*	
-		fill with bombs
-			If a cells neighbors are all bombs, it cannot be a bomb.
-		Remove all edge bombs.
-		fill with numbers */
 
 function cellBuilder() {
   for (let row = 0; row < rows; row++) {
@@ -167,8 +165,6 @@ function cellBuilder() {
       cellCount++
     }
   }
-  cellCount--
-  plantBombs()
 }
 
 function plantBombs() {
@@ -227,17 +223,19 @@ function handleCellClick(evnt) {
   let cell = cells[evnt.target.id]
   if (!gameOver) {
     if (!cell.hasFlag) {
-			if(!cell.isRevealed) {
-      	if (cell.hasBomb) {
-					cell.isRevealed = true
-      	 	gameOver = 1
-      	 	endGame()
-				}
-				if (cell.hasNeighboringBombs) {
-					cell.isRevealed = true
-				}
-				if
-			
+      if (!cell.isRevealed) {
+        if (cell.hasBomb) {
+          cell.isRevealed = true
+          gameOver = 1
+          endGame()
+        }
+        if (cell.hasNeighboringBombs) {
+          cell.isRevealed = true
+        }
+        if (!cell.hasNeighboringBombs) {
+          cell.isRevealed = true
+          cell.cascade()
+        }
       }
     }
   }
@@ -250,9 +248,13 @@ function handleCellClick(evnt) {
 function handleCellAuxClick(evnt) {
   let cell = cells[evnt.target.id]
   if (!gameOver) {
-    if (!cell.isRevealed) {
-      cell.hasFlag ? (cell.hasFlag = false) : (cell.hasFlag = true)
-    }
+    if (playerFlags) {
+      if (!cell.isRevealed) {
+        cell.hasFlag
+          ? ((cell.hasFlag = false), playerFlags++)
+          : ((cell.hasFlag = true), playerFlags--)
+			}
+		}
   }
 }
 
@@ -269,7 +271,7 @@ function endGame() {
 		render emoji button */
 
 function render() {
-	console.log("hey look, you're rendering!")
+  console.log("hey look, you're rendering!")
 }
 
 function getRandomIntInclusive(minNum, maxNum) {
