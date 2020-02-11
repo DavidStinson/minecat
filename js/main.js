@@ -9,6 +9,7 @@ let winLoss = null
 let flags = null
 let cellCount = null
 let cells = null
+let cellsWithBombs = null
 
 /*-----------------------------------------------------------------------------
 =================================== Objects ===================================
@@ -49,7 +50,7 @@ class Cell {
   neighborsAllHaveBombs() {
     let neighborBombCount = 0
     this.neighbors.forEach(neighbor => {
-      if (neighbor.bomb) neighborBombCount++
+      if (cells[neighbor].bomb) neighborBombCount++
     })
     return neighborBombCount === 8 ? true : false
   }
@@ -94,12 +95,11 @@ function init() {
   /* 2 rows and columns are added compared to what the user inputs, because the first and last of each are hidden from the user view*/
   // Don't allow user to set less than 12 columns
   rows = 10
-  columns = 70
+  columns = 14
   flags = 20
-  bombs = 20
+  bombs = 10
   time = 999
-  winLoss = 0
-  cellCount = 0
+  winLoss = cellCount = cellsWithBombs = 0
   cells = []
   boardBuilder()
   cellBuilder()
@@ -162,17 +162,28 @@ function cellBuilder() {
 }
 
 function plantBombs() {
-  let cellsWithBombs = 0
   while (cellsWithBombs < bombs) {
     cellId = getRandomIntInclusive(0, cells.length - 1)
     if (!cells[cellId].bomb) {
-      if (!cells[cellId].neighborsAllHaveBombs()) {
-        cells[cellId].bomb = true
-        console.log(cells[cellId].id + ' now has a bomb')
-        cellsWithBombs++
+      cells[cellId].bomb = true
+      cellsWithBombs++
+      document.getElementById(cells[cellId].id).textContent = 'b'
+    }
+	}
+	//Prevent the edge case of a 9 bombs within a 3x3 area (or 6 bombs within a 2x3 area around the edges OR 4 bombs within a 2x2 area in the corners)
+  cells.forEach(cell => {
+    if (!cell.edge()) {
+      if (cell.bomb) {
+        if (cell.neighborsAllHaveBombs()) {
+          cell.bomb = false
+          cellsWithBombs--
+          document.getElementById(cell.id).textContent = ''
+          plantBombs()
+        }
       }
     }
-  }
+	})
+	placeNumbers()
 }
 
 // handleCellClick
