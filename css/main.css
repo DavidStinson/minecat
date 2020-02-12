@@ -57,7 +57,7 @@ main.light {
   text-align: center;
 }
 
-#mine-cat{
+#mine-cat {
   margin: auto;
   font-size: x-large;
   border: 0;
@@ -119,7 +119,7 @@ main.light {
   cursor: not-allowed;
   box-shadow: inset -2px -2px 5px rgba(255, 255, 255, 1),
     inset 2px 2px 5px rgba(0, 0, 0, 0.4);
-  background-color: #c3c3c3;
+  /*background-color: #c3c3c3; */
 }
 
 .cell.dark {
@@ -132,34 +132,34 @@ main.light {
 
 /* NUMBERS */
 
-.num1 {
-  color: #55b620;
+.cell.num1.revealed {
+  background-color: #5f9e3d;
 }
 
-.num2 {
-  color: #00a1f2;
+.cell.num2.revealed {
+  background-color: #3c88ad;
 }
 
-.num3 {
-  color: #c500f4;
+.cell.num3.revealed {
+  background-color: #9340a8;
 }
 
-.num4 {
-  color: #c0af14;
+.cell.num4.revealed {
+  background-color: #c7ba44;
 }
 
-.num5 {
-  color: #ff8d00;
+.cell.num5.revealed {
+  background-color: #c97e23;
 }
 
-.num6 {
-  color: #ff0024;
+.cell.num6.revealed {
+  background-color: #c71c33;
 }
 
-.num7 {
-  color: #ff418c;
+.cell.num7.revealed {
+  background-color: #ac2c5f;
 }
 
-.num8 {
-  color: #888888;
+.cell.num8.revealed {
+  background-color: #888888;
 }
