@@ -15,7 +15,7 @@ let cellsToBeRevealed = null
 let cellEls = []
 
 /*-----------------------------------------------------------------------------
-=================================== Objects ===================================
+============================= Objects and Classes =============================
 -----------------------------------------------------------------------------*/
 // Object constructor for cells
 class Cell {
@@ -59,7 +59,7 @@ class Cell {
   cascade() {
     this.neighbors.forEach(neighbor => {
       let cell = cells[neighbor]
-      if (!cell.isRevealed && !cell.hasFlag && !cell.hasBomb) {
+      if (!cell.isRevealed && !cell.hasFlag) {
         if (cell.hasNeighboringBombs) {
           document.getElementById(cell.id).style.background = 'orange'
           cell.isRevealed = true
@@ -138,6 +138,8 @@ function init() {
   placeNumbers()
 }
 
+/*========================= Board and Cell Creation =========================*/
+
 function boardBuilder() {
   /* Determine the height of the bounding box with the number of user facing 
 rows, multiplied by the size of each cell, plus the height of all the elements
@@ -177,6 +179,8 @@ function cellBuilder() {
 			the board to remove literal edge cases in bomb placement logic */
       if (newCell.isEdge()) {
         // Fill outside edges with bombs, don't show them to the player
+        let newCellEl = document.createElement('div')
+        cellEls.push(newCellEl)
         newCell.hasBomb = true
       } else {
         let newCellEl = document.createElement('div')
@@ -232,6 +236,8 @@ Fill cells with a number and mark them as revealed. We are now done with edges*/
   })
 }
 
+/*============================= Event Functions =============================*/
+
 function handleCellClick(evnt) {
   let cell = cells[evnt.target.id]
   if (!gameOver && !cell.hasFlag && !cell.isRevealed) {
@@ -279,8 +285,10 @@ function checkForEndGame() {
       cell.isRevealed = true
     })
   }
+  preRender()
 }
 
+/*================================== Render ==================================*/
 // render
 
 /*  Render cells
@@ -298,25 +306,36 @@ function preRender() {
       countdownEl.classList.replace('light', 'dark')
       cellEls.forEach(cellEl => cellEl.classList.replace('light', 'dark'))
     } else {
-			boundingEl.classList.replace('dark', 'light')
+      boundingEl.classList.replace('dark', 'light')
       titleEl.classList.replace('dark', 'light')
       flagCountEl.classList.replace('dark', 'light')
       mineCatEl.classList.replace('dark', 'light')
       countdownEl.classList.replace('dark', 'light')
       cellEls.forEach(cellEl => cellEl.classList.replace('dark', 'light'))
-		}
-		colorMode.change = false
+    }
+    colorMode.change = false
   }
+  render()
 }
 
-function render(color) {
-  cells.forEach(cell => {
+function render() {
+  cellEls.forEach((cellEl, idx) => {
+    let cell = cells[idx]
     if (cell.isRevealed) {
+      cellEl.classList.add('revealed')
       if (cell.hasBomb) {
+        cellEl.textContent = '💣'
+      } else if (cell.hasNeighboringBombs) {
+        cellEl.textContent = cell.hasNeighboringBombs
+        cellEl.classList.add(`num${cell.hasNeighboringBombs}`)
+      } else {
+        cellEl.textContent = 'Z'
       }
     }
   })
 }
+
+/*============================= Helper Functions =============================*/
 
 function getRandomIntInclusive(minNum, maxNum) {
   minNum = Math.ceil(minNum)

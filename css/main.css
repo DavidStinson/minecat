@@ -73,9 +73,11 @@ main {
   box-shadow: inset 0 0 5px #000000;
   border: 0;
   margin: 0;
+  line-height: 25px;
   vertical-align: center;
   text-align: center;
   cursor: pointer;
+  font-family: sans-serif;
 }
 
 .cell .revealed {
@@ -83,9 +85,31 @@ main {
 }
 
 .dm {
-
 }
 
 .lm {
-	
+}
+
+.num1 {
+}
+
+.num2 {
+}
+
+.num3 {
+}
+
+.num4 {
+}
+
+.num5 {
+}
+
+.num6 {
+}
+
+.num7 {
+}
+
+.num8 {
 }
