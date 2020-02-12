@@ -76,8 +76,8 @@ class Cell {
 }
 
 let colorMode = {
-  dark: 1,
-  light: 0,
+  dark: 0,
+  light: 1,
   change: false,
   changeColorMode: function() {
     if (colorMode.dark) {
@@ -290,9 +290,23 @@ function checkForEndGame() {
 
 function preRender() {
   if (colorMode.change) {
-    boundingEl.classList
+    if (colorMode.dark) {
+      boundingEl.classList.replace('light', 'dark')
+      titleEl.classList.replace('light', 'dark')
+      flagCountEl.classList.replace('light', 'dark')
+      mineCatEl.classList.replace('light', 'dark')
+      countdownEl.classList.replace('light', 'dark')
+      cellEls.forEach(cellEl => cellEl.classList.replace('light', 'dark'))
+    } else {
+			boundingEl.classList.replace('dark', 'light')
+      titleEl.classList.replace('dark', 'light')
+      flagCountEl.classList.replace('dark', 'light')
+      mineCatEl.classList.replace('dark', 'light')
+      countdownEl.classList.replace('dark', 'light')
+      cellEls.forEach(cellEl => cellEl.classList.replace('dark', 'light'))
+		}
+		colorMode.change = false
   }
-  colorMode.dark ? render('dm') : render('lm')
 }
 
 function render(color) {
