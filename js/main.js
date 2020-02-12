@@ -61,12 +61,12 @@ class Cell {
       let cell = cells[neighbor]
       if (!cell.isRevealed && !cell.hasFlag) {
         if (cell.hasNeighboringBombs) {
-          document.getElementById(cell.id).style.background = 'orange'
+          cellEls[cell.id].classList.add('animated', 'flash')
           cell.isRevealed = true
         }
         if (!cell.hasNeighboringBombs) {
           cell.isRevealed = true
-          document.getElementById(cell.id).style.background = 'green'
+          cellEls[cell.id].classList.add('animated', 'flash')
           //Round and round we go
           cell.cascade()
         }
@@ -105,6 +105,7 @@ const flagCountEl = document.querySelector('#flag-count')
 const mineCatEl = document.querySelector('#mine-cat')
 const countdownEl = document.querySelector('#countdown')
 const gameboardEl = document.querySelector('#gameboard')
+const bodyEl = document.querySelector('body')
 
 /*-----------------------------------------------------------------------------
 =============================== Event Listeners ===============================
@@ -127,7 +128,7 @@ function init() {
   rows = 10
   columns = 14
   playerFlags = 20
-  bombs = 60
+  bombs = 20
   time = 999
   gameOver = cellCount = cellsWithBombs = 0
   cells = []
@@ -144,12 +145,12 @@ function boardBuilder() {
   /* Determine the height of the bounding box with the number of user facing 
 rows, multiplied by the size of each cell, plus the height of all the elements
 within the bounding box. Do the same for the width using the columns. */
-  boundingEl.style.height = (rows - 2) * 25 + 107 + 4 + 'px'
-  boundingEl.style.width = (columns - 2) * 25 + 10 + 4 + 'px'
+  boundingEl.style.height = (rows - 2) * 25 + 107 + 4 + 20 + 'px'
+  boundingEl.style.width = (columns - 2) * 25 + 10 + 4 + 20 + 'px'
   /* Determine the height of the board with the number of user facing rows,
 	multiplied by the size of each cell. Do the same for the width using the
 	columns */
-  gameboardEl.style.columns = (rows - 2) * 25 + 'px'
+  gameboardEl.style.height = (rows - 2) * 25 + 'px'
   gameboardEl.style.width = (columns - 2) * 25 + 'px'
 }
 
@@ -231,7 +232,7 @@ Fill cells with a number and mark them as revealed. We are now done with edges*/
   cells.forEach(cell => {
     if (!cell.isEdge() && !cell.hasBomb) {
       cell.hasNeighboringBombs = cell.countNeighborsWithBombs()
-      document.getElementById(cell.id).textContent = cell.hasNeighboringBombs
+      //document.getElementById(cell.id).textContent = cell.hasNeighboringBombs
     }
   })
 }
@@ -240,14 +241,18 @@ Fill cells with a number and mark them as revealed. We are now done with edges*/
 
 function handleCellClick(evnt) {
   let cell = cells[evnt.target.id]
+  let cellEl = cellEls[evnt.target.id]
   if (!gameOver && !cell.hasFlag && !cell.isRevealed) {
     if (cell.hasBomb) {
       cell.isRevealed = true
+      cellEl.classList.add('animated', 'flash')
       gameOver = -1
     } else if (cell.hasNeighboringBombs) {
       cell.isRevealed = true
+      cellEl.classList.add('animated', 'flash')
     } else {
       cell.isRevealed = true
+      cellEl.classList.add('animated', 'flash')
       cell.cascade()
     }
     checkForEndGame()
@@ -297,6 +302,7 @@ function checkForEndGame() {
 function preRender() {
   if (colorMode.change) {
     if (colorMode.dark) {
+      body.classList.replace('light', 'dark')
       boundingEl.classList.replace('light', 'dark')
       titleEl.classList.replace('light', 'dark')
       flagCountEl.classList.replace('light', 'dark')
@@ -329,7 +335,7 @@ function render() {
         cellEl.textContent = cell.hasNeighboringBombs
         cellEl.classList.add(`num${cell.hasNeighboringBombs}`)
       } else {
-        cellEl.textContent = 'Z'
+        cellEl.textContent = ''
       }
     }
   })
