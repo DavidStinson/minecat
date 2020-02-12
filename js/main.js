@@ -68,7 +68,6 @@ class Cell {
             if (!cell.hasNeighboringBombs) {
               cell.isRevealed = true
               document.getElementById(cell.id).style.background = 'green'
-              console.log(cell.id + ' is reavealed')
               //Round and round we go
               cell.cascade()
             }
@@ -77,6 +76,24 @@ class Cell {
       }
     })
   }
+}
+
+let colorMode = {
+  dark: 1,
+	light: 0,
+	change: false,
+  changeColorMode: function() {
+    if (colorMode.dark) {
+      colorMode.light = 1
+			colorMode.dark = 0
+			colorMode.change = true
+    } else {
+      colorMode.light = 0
+			colorMode.dark = 1
+			colorMode.change = true
+    }
+    preRender()
+  },
 }
 
 /*-----------------------------------------------------------------------------
@@ -232,11 +249,9 @@ function handleCellClick(evnt) {
           return
         } else {
           if (cell.hasNeighboringBombs) {
-            console.log(cell.id + ' is reavealed')
             document.getElementById(cell.id).style.background = 'orange'
             cell.isRevealed = true
           } else {
-            console.log(cell.id + ' is revealed')
             document.getElementById(cell.id).style.background = 'green'
             cell.isRevealed = true
             cell.cascade()
@@ -261,6 +276,7 @@ function handleCellAuxClick(evnt) {
       //FLASH FLAG COUNTER HERE
     }
   }
+  preRender()
 }
 
 function checkForEndGame() {
@@ -270,7 +286,6 @@ function checkForEndGame() {
       cellsToBeRevealed++
     }
   })
-  console.log(cellsToBeRevealed, bombs)
   if (cellsToBeRevealed === bombs) {
     if (!gameOver) {
       gameOver = 1
@@ -284,15 +299,26 @@ function checkForEndGame() {
 }
 
 // render
-//  *EVENTUALLY* if the game is starting, query the user for number of rows,
-//  *columns, bombs, and time they want to have
+
 /*  Render cells
 		render framing
 		render countdown
 		render emoji button */
 
-function render() {
-  console.log("hey look, you're rendering!")
+function preRender() {
+  if (colorMode.colo) {
+    boundingEl.classList
+  }
+  colorMode.dark ? render('dm') : render('lm')
+}
+
+function render(color) {
+  cells.forEach(cell => {
+    if (cell.isRevealed) {
+      if (cell.hasBomb) {
+      }
+    }
+  })
 }
 
 function getRandomIntInclusive(minNum, maxNum) {
