@@ -80,14 +80,16 @@ let colorMode = {
   light: 1,
   change: false,
   changeColorMode: function() {
-    if (colorMode.dark) {
-      colorMode.light = 1
-      colorMode.dark = 0
-      colorMode.change = true
+    if (this.dark) {
+      this.light = 1
+      this.dark = 0
+      this.change = true
+      console.log('changing to light')
     } else {
-      colorMode.light = 0
-      colorMode.dark = 1
-      colorMode.change = true
+      this.light = 0
+      this.dark = 1
+      this.change = true
+      console.log('changing to dark')
     }
     preRender()
   },
@@ -116,10 +118,8 @@ mineCatEl.addEventListener('click', checkForEndGame)
 ================================= Functions ===================================
 -----------------------------------------------------------------------------*/
 
-// init
-/*
- *EVENTUALLY* Querry the user for everything, or query them to choose a
- *difficulty */
+// *EVENTUALLY* Querry the user for everything, or query them to choose a
+// *difficulty
 function init() {
   /* 2 rows and columns are added compared to what the user inputs, because the 
 	first and last of each are hidden from the user view*/
@@ -127,7 +127,7 @@ function init() {
   rows = 10
   columns = 14
   playerFlags = 20
-  bombs = 10
+  bombs = 60
   time = 999
   gameOver = cellCount = cellsWithBombs = 0
   cells = []
@@ -185,7 +185,7 @@ function cellBuilder() {
       } else {
         let newCellEl = document.createElement('div')
         newCellEl.setAttribute('id', cellCount)
-        newCellEl.classList.add('cell')
+        newCellEl.classList.add('cell', 'light')
         gameboardEl.appendChild(newCellEl)
         cellEls.push(newCellEl)
       }
@@ -245,10 +245,8 @@ function handleCellClick(evnt) {
       cell.isRevealed = true
       gameOver = -1
     } else if (cell.hasNeighboringBombs) {
-      document.getElementById(cell.id).style.background = 'orange'
       cell.isRevealed = true
     } else {
-      document.getElementById(cell.id).style.background = 'green'
       cell.isRevealed = true
       cell.cascade()
     }
@@ -305,6 +303,7 @@ function preRender() {
       mineCatEl.classList.replace('light', 'dark')
       countdownEl.classList.replace('light', 'dark')
       cellEls.forEach(cellEl => cellEl.classList.replace('light', 'dark'))
+      console.log('pre-render dark')
     } else {
       boundingEl.classList.replace('dark', 'light')
       titleEl.classList.replace('dark', 'light')
@@ -312,6 +311,7 @@ function preRender() {
       mineCatEl.classList.replace('dark', 'light')
       countdownEl.classList.replace('dark', 'light')
       cellEls.forEach(cellEl => cellEl.classList.replace('dark', 'light'))
+      console.log('pre-render light')
     }
     colorMode.change = false
   }

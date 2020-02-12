@@ -84,32 +84,44 @@ main {
   cursor: not-allowed;
 }
 
-.dm {
+.cell,
+.dark {
+  background-color: #3e3e3e;
 }
 
-.lm {
+.cell,
+.light {
+  background-color: #e3e3e3;
 }
 
 .num1 {
+  color: #4cda00;
 }
 
 .num2 {
+  color: #00a1f2;
 }
 
 .num3 {
+  color: #c500f4;
 }
 
 .num4 {
+  color: #ca9f1c;
 }
 
 .num5 {
+  color: #ff8d00;
 }
 
 .num6 {
+  color: #ff0024;
 }
 
 .num7 {
+  color: #ff418c;
 }
 
 .num8 {
+  color: #888888;
 }
