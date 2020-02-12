@@ -12,6 +12,7 @@ let cells = null
 let cellsWithBombs = null
 let gameOver = null
 let cellsToBeRevealed = null
+let cellEls = []
 
 /*-----------------------------------------------------------------------------
 =================================== Objects ===================================
@@ -58,20 +59,16 @@ class Cell {
   cascade() {
     this.neighbors.forEach(neighbor => {
       let cell = cells[neighbor]
-      if (!cell.isRevealed) {
-        if (!cell.hasFlag) {
-          if (!cell.hasBomb) {
-            if (cell.hasNeighboringBombs) {
-              document.getElementById(cell.id).style.background = 'orange'
-              cell.isRevealed = true
-            }
-            if (!cell.hasNeighboringBombs) {
-              cell.isRevealed = true
-              document.getElementById(cell.id).style.background = 'green'
-              //Round and round we go
-              cell.cascade()
-            }
-          }
+      if (!cell.isRevealed && !cell.hasFlag && !cell.hasBomb) {
+        if (cell.hasNeighboringBombs) {
+          document.getElementById(cell.id).style.background = 'orange'
+          cell.isRevealed = true
+        }
+        if (!cell.hasNeighboringBombs) {
+          cell.isRevealed = true
+          document.getElementById(cell.id).style.background = 'green'
+          //Round and round we go
+          cell.cascade()
         }
       }
     })
@@ -80,17 +77,17 @@ class Cell {
 
 let colorMode = {
   dark: 1,
-	light: 0,
-	change: false,
+  light: 0,
+  change: false,
   changeColorMode: function() {
     if (colorMode.dark) {
       colorMode.light = 1
-			colorMode.dark = 0
-			colorMode.change = true
+      colorMode.dark = 0
+      colorMode.change = true
     } else {
       colorMode.light = 0
-			colorMode.dark = 1
-			colorMode.change = true
+      colorMode.dark = 1
+      colorMode.change = true
     }
     preRender()
   },
@@ -134,6 +131,7 @@ function init() {
   time = 999
   gameOver = cellCount = cellsWithBombs = 0
   cells = []
+  cellEls = []
   boardBuilder()
   cellBuilder()
   plantBombs()
@@ -185,6 +183,7 @@ function cellBuilder() {
         newCellEl.setAttribute('id', cellCount)
         newCellEl.classList.add('cell')
         gameboardEl.appendChild(newCellEl)
+        cellEls.push(newCellEl)
       }
       // From this point, logic is carried out using the cells array
       cells.push(newCell)
@@ -205,16 +204,12 @@ function plantBombs() {
   /*Prevent the edge case of a 9 bombs within a 3x3 area (or 6 bombs within
 		2x3 area around the edges OR 4 bombs within a 2x2 area in the corners)*/
   cells.forEach(cell => {
-    if (!cell.isEdge()) {
-      if (cell.hasBomb) {
-        if (cell.countNeighborsWithBombs() === 8) {
-          cell.hasBomb = false
-          cellsWithBombs--
-          document.getElementById(cell.id).textContent = ''
-          //Round and round we go
-          plantBombs()
-        }
-      }
+    if (!cell.isEdge() && cell.hasBomb && cell.countNeighborsWithBombs() == 8) {
+      cell.hasBomb = false
+      cellsWithBombs--
+      document.getElementById(cell.id).textContent = ''
+      //Round and round we go
+      plantBombs()
     }
   })
 }
@@ -230,51 +225,41 @@ Fill cells with a number and mark them as revealed. We are now done with edges*/
     }
   })
   cells.forEach(cell => {
-    if (!cell.isEdge()) {
-      if (!cell.hasBomb) {
-        cell.hasNeighboringBombs = cell.countNeighborsWithBombs()
-        document.getElementById(cell.id).textContent = cell.hasNeighboringBombs
-      }
+    if (!cell.isEdge() && !cell.hasBomb) {
+      cell.hasNeighboringBombs = cell.countNeighborsWithBombs()
+      document.getElementById(cell.id).textContent = cell.hasNeighboringBombs
     }
   })
 }
 
 function handleCellClick(evnt) {
   let cell = cells[evnt.target.id]
-  if (!gameOver) {
-    if (!cell.hasFlag) {
-      if (!cell.isRevealed) {
-        if (cell.hasBomb) {
-          cell.isRevealed = true
-          return
-        } else {
-          if (cell.hasNeighboringBombs) {
-            document.getElementById(cell.id).style.background = 'orange'
-            cell.isRevealed = true
-          } else {
-            document.getElementById(cell.id).style.background = 'green'
-            cell.isRevealed = true
-            cell.cascade()
-          }
-        }
-        checkForEndGame()
-      }
+  if (!gameOver && !cell.hasFlag && !cell.isRevealed) {
+    if (cell.hasBomb) {
+      cell.isRevealed = true
+      gameOver = -1
+    } else if (cell.hasNeighboringBombs) {
+      document.getElementById(cell.id).style.background = 'orange'
+      cell.isRevealed = true
+    } else {
+      document.getElementById(cell.id).style.background = 'green'
+      cell.isRevealed = true
+      cell.cascade()
     }
+    checkForEndGame()
   }
 }
 
 function handleCellAuxClick(evnt) {
   let cell = cells[evnt.target.id]
-  if (!gameOver) {
-    if (playerFlags) {
-      if (!cell.isRevealed) {
-        cell.hasFlag
-          ? ((cell.hasFlag = false), playerFlags++)
-          : ((cell.hasFlag = true), playerFlags--)
-      }
-    } else {
-      //FLASH FLAG COUNTER HERE
+  if (!gameOver && playerFlags) {
+    if (!cell.isRevealed) {
+      cell.hasFlag
+        ? ((cell.hasFlag = false), playerFlags++)
+        : ((cell.hasFlag = true), playerFlags--)
     }
+  } else {
+    //FLASH FLAG COUNTER HERE
   }
   preRender()
 }
@@ -286,15 +271,13 @@ function checkForEndGame() {
       cellsToBeRevealed++
     }
   })
-  if (cellsToBeRevealed === bombs) {
-    if (!gameOver) {
-      gameOver = 1
-    }
-    if (gameOver) {
-      cells.forEach(cell => {
-        cell.isRevealed = true
-      })
-    }
+  if (!gameOver && cellsToBeRevealed === bombs) {
+    gameOver = 1
+  }
+  if (gameOver) {
+    cells.forEach(cell => {
+      cell.isRevealed = true
+    })
   }
 }
 
@@ -306,7 +289,7 @@ function checkForEndGame() {
 		render emoji button */
 
 function preRender() {
-  if (colorMode.colo) {
+  if (colorMode.change) {
     boundingEl.classList
   }
   colorMode.dark ? render('dm') : render('lm')
