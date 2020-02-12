@@ -4,8 +4,8 @@ body.light {
 
 main {
   margin: 40px auto auto auto;
-	display: grid;
-	border-radius: 20px;
+  display: grid;
+  border-radius: 20px;
   grid-template-columns: 15px auto 15px;
   grid-template-rows: 15px 85px 12px auto 15px;
   grid-template-areas:
@@ -13,14 +13,13 @@ main {
     '. header .'
     '. . .'
     '. gameboard .'
-		'. . .';
+    '. . .';
 }
 
 main.light {
-	background-color: #e3e3e3;
-	box-shadow: 
-		-12px -12px 12px 0 rgba(255, 255, 255, .8), 
-		12px 12px 12px 0 rgba(0,0,0,.6);
+  background-color: #e3e3e3;
+  box-shadow: -12px -12px 12px 0 rgba(255, 255, 255, 0.8),
+    12px 12px 12px 0 rgba(0, 0, 0, 0.6);
 }
 
 #header {
@@ -58,9 +57,30 @@ main.light {
   text-align: center;
 }
 
-#mine-cat {
+#mine-cat{
   margin: auto;
   font-size: x-large;
+  border: 0;
+  border-radius: 8px;
+}
+
+#mine-cat.light {
+  background-color: #e3e3e3;
+  box-shadow: -4px -4px 4px 0 rgba(255, 255, 255, 0.6),
+    4px 4px 4px 0 rgba(0, 0, 0, 0.5);
+}
+
+#mine-cat.light:hover {
+  background-color: #e3e3e3;
+  box-shadow: -4px -4px 4px 0 rgba(255, 255, 255, 0.6),
+    4px 4px 4px 0 rgba(0, 0, 0, 0.5);
+}
+
+#mine-cat.light:active {
+  background-color: #c3c3c3;
+  box-shadow: -4px -4px 4px 0 rgba(255, 255, 255, 0.6),
+    4px 4px 4px rgba(0, 0, 0, 0.5), inset -2px -2px 5px rgba(255, 255, 255, 1),
+    inset 2px 2px 5px rgba(0, 0, 0, 0.7);
 }
 
 #countdown {
@@ -76,10 +96,16 @@ main.light {
   flex-wrap: wrap;
 }
 
+#gameboard.light {
+  box-shadow: -4px -4px 4px 0 rgba(255, 255, 255, 0.4),
+    4px 4px 4px 0 rgba(0, 0, 0, 0.7);
+}
+
 .cell {
   height: 25px;
   width: 25px;
-  box-shadow: inset 0 0 5px rgba(255, 255, 255, 0.9);
+  box-shadow: inset 2px 2px 5px rgba(255, 255, 255, 1),
+    inset -2px -2px 5px rgba(0, 0, 0, 0.7);
   border: 0;
   margin: 0;
   line-height: 25px;
@@ -89,9 +115,11 @@ main.light {
   font-family: sans-serif;
 }
 
-.revealed {
+.cell.light.revealed {
   cursor: not-allowed;
-  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.9);
+  box-shadow: inset -2px -2px 5px rgba(255, 255, 255, 1),
+    inset 2px 2px 5px rgba(0, 0, 0, 0.4);
+  background-color: #c3c3c3;
 }
 
 .cell.dark {
@@ -102,8 +130,10 @@ main.light {
   background-color: #e3e3e3;
 }
 
+/* NUMBERS */
+
 .num1 {
-  color: #56ad27;
+  color: #55b620;
 }
 
 .num2 {
@@ -115,7 +145,7 @@ main.light {
 }
 
 .num4 {
-  color: #ca9f1c;
+  color: #c0af14;
 }
 
 .num5 {
