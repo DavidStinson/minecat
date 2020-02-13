@@ -5,7 +5,7 @@ let rows = null
 let columns = null
 let time = null
 let bombs = null
-let playerFlags = null
+let flagCount = null
 let playerCells = null
 let cellCount = null
 let cells = null
@@ -105,7 +105,7 @@ const boundingEl = document.querySelector('main')
 const titleEl = document.querySelector('#title')
 const flagCountEl = document.querySelector('#flag-count')
 const mineCatEl = document.querySelector('#mine-cat')
-const countUpEl = document.querySelector('#count-up')
+const timeEl = document.querySelector('#time')
 const gameboardEl = document.querySelector('#gameboard')
 const bodyEl = document.querySelector('body')
 
@@ -129,7 +129,7 @@ function init() {
   // Don't allow user to set less than 12 columns
   rows = 25
   columns = 45
-  playerFlags = bombs = 100
+  flagCount = bombs = 100
   time = 0
   gameOver = cellCount = cellsWithBombs = 0
   cells = []
@@ -137,8 +137,8 @@ function init() {
   firstClick = 1
   clearInterval(timer)
   timer = 0
-  flagCountEl.textContent = playerFlags
-  countUpEl.textContent = '0'
+  flagCountEl.textContent = formatNumberWithPadding(flagCount, '0', 3)
+  timeEl.textContent = '000'
   mineCatEl.textContent = '😸'
   while (gameboardEl.firstChild) {
     gameboardEl.removeChild(gameboardEl.firstChild)
@@ -275,10 +275,10 @@ function handleCellClick(evnt) {
 function handleCellAuxClick(evnt) {
   let cell = cells[evnt.target.id]
   if (!gameOver && !cell.isRevealed) {
-    if (playerFlags) {
+    if (flagCount) {
       cell.hasFlag
-        ? ((cell.hasFlag = false), playerFlags++)
-        : ((cell.hasFlag = true), playerFlags--)
+        ? ((cell.hasFlag = false), flagCount++)
+        : ((cell.hasFlag = true), flagCount--)
     } else {
       flagCountEl.classList.add('animated', 'flash')
     }
@@ -315,14 +315,14 @@ function preRender() {
       titleEl.classList.replace('light', 'dark')
       flagCountEl.classList.replace('light', 'dark')
       mineCatEl.classList.replace('light', 'dark')
-      countUpEl.classList.replace('light', 'dark')
+      timeEl.classList.replace('light', 'dark')
       cellEls.forEach(cellEl => cellEl.classList.replace('light', 'dark'))
     } else {
       boundingEl.classList.replace('dark', 'light')
       titleEl.classList.replace('dark', 'light')
       flagCountEl.classList.replace('dark', 'light')
       mineCatEl.classList.replace('dark', 'light')
-      countUpEl.classList.replace('dark', 'light')
+      timeEl.classList.replace('dark', 'light')
       cellEls.forEach(cellEl => cellEl.classList.replace('dark', 'light'))
     }
     colorMode.change = false
@@ -331,7 +331,8 @@ function preRender() {
 }
 
 function render() {
-  flagCountEl.textContent = playerFlags
+  let flagCountStr = formatNumberWithPadding(flagCount, '0', 3)
+  flagCountEl.textContent = flagCountStr
   if (gameOver) {
     gameOver === 1
       ? (mineCatEl.textContent = '😻')
@@ -357,16 +358,25 @@ function render() {
   })
 }
 
-/*============================= Helper Functions =============================*/
-
 function renderTime() {
   firstClick = 0
   if (!gameOver) {
     if (time < 999) {
       time++
-      countUpEl.textContent = time
+      console.log(time)
+      let timeStr = formatNumberWithPadding(time, '0', 3)
+      console.log(timeStr)
+      timeEl.textContent = timeStr
     }
   }
+}
+
+/*============================= Helper Functions =============================*/
+
+function formatNumberWithPadding(num, pad, len) {
+  num += ''
+  if (num.length >= len) return num
+  return pad.repeat(len - num.length) + num
 }
 
 function getRandomIntInclusive(minNum, maxNum) {

@@ -81,7 +81,7 @@ main.light {
     inset 2px 2px 5px rgba(0, 0, 0, 0.7);
 }
 
-#count-up {
+#time {
   text-align: center;
   margin: auto;
   flex-grow: 1;
