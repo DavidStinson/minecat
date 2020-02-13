@@ -102,7 +102,7 @@ const boundingEl = document.querySelector('main')
 const titleEl = document.querySelector('#title')
 const flagCountEl = document.querySelector('#flag-count')
 const mineCatEl = document.querySelector('#mine-cat')
-const countdownEl = document.querySelector('#countdown')
+const countUpEl = document.querySelector('#count-up')
 const gameboardEl = document.querySelector('#gameboard')
 const bodyEl = document.querySelector('body')
 
@@ -124,13 +124,15 @@ function init() {
   /* 2 rows and columns are added compared to what the user inputs, because the 
 	first and last of each are hidden from the user view*/
   // Don't allow user to set less than 12 columns
-  rows = 10
-  columns = 14
+  rows = 25
+  columns = 45
   playerFlags = bombs = 10
-  time = 999
+  time = 0
   gameOver = cellCount = cellsWithBombs = 0
   cells = []
   cellEls = []
+  firstClick = 1
+  mineCatEl.textContent = '😸'
   while (gameboardEl.firstChild) {
     gameboardEl.removeChild(gameboardEl.firstChild)
   }
@@ -205,7 +207,6 @@ function plantBombs() {
     if (!cells[cellId].hasBomb) {
       cells[cellId].hasBomb = true
       cellsWithBombs++
-      document.getElementById(cells[cellId].id).textContent = 'b'
     }
   }
   /*Prevent the edge case of a 9 bombs within a 3x3 area (or 6 bombs within
@@ -214,7 +215,6 @@ function plantBombs() {
     if (!cell.isEdge() && cell.hasBomb && cell.countNeighborsWithBombs() == 8) {
       cell.hasBomb = false
       cellsWithBombs--
-      document.getElementById(cell.id).textContent = ''
       //Round and round we go
       plantBombs()
     }
@@ -242,6 +242,9 @@ Fill cells with a number and mark them as revealed. We are now done with edges*/
 /*============================= Event Functions =============================*/
 
 function handleCellClick(evnt) {
+  if (firstClick) {
+    setInterval(renderTime, 1000)
+  }
   let cell = cells[evnt.target.id]
   let cellEl = cellEls[evnt.target.id]
   if (!gameOver && !cell.hasFlag && !cell.isRevealed) {
@@ -295,12 +298,6 @@ function checkForEndGame() {
 }
 
 /*================================== Render ==================================*/
-// render
-
-/*  Render cells
-		render framing
-		render countdown
-		render emoji button */
 
 function preRender() {
   if (colorMode.change) {
@@ -310,14 +307,14 @@ function preRender() {
       titleEl.classList.replace('light', 'dark')
       flagCountEl.classList.replace('light', 'dark')
       mineCatEl.classList.replace('light', 'dark')
-      countdownEl.classList.replace('light', 'dark')
+      countUpEl.classList.replace('light', 'dark')
       cellEls.forEach(cellEl => cellEl.classList.replace('light', 'dark'))
     } else {
       boundingEl.classList.replace('dark', 'light')
       titleEl.classList.replace('dark', 'light')
       flagCountEl.classList.replace('dark', 'light')
       mineCatEl.classList.replace('dark', 'light')
-      countdownEl.classList.replace('dark', 'light')
+      countUpEl.classList.replace('dark', 'light')
       cellEls.forEach(cellEl => cellEl.classList.replace('dark', 'light'))
     }
     colorMode.change = false
@@ -327,12 +324,19 @@ function preRender() {
 
 function render() {
   flagCountEl.textContent = playerFlags
+  if (gameOver) {
+    gameOver === 1
+      ? (mineCatEl.textContent = '😻')
+      : (mineCatEl.textContent = '🙀')
+  }
   cellEls.forEach((cellEl, idx) => {
     let cell = cells[idx]
     if (cell.isRevealed) {
       cellEl.classList.add('revealed')
       if (cell.hasBomb) {
-        cellEl.textContent = '💣'
+        gameOver === 1
+          ? (cellEl.textContent = '😻')
+          : (cellEl.textContent = '💣')
       } else if (cell.hasNeighboringBombs) {
         cellEl.textContent = cell.hasNeighboringBombs
         cellEl.classList.add(`num${cell.hasNeighboringBombs}`)
@@ -340,13 +344,19 @@ function render() {
         cellEl.textContent = ''
       }
     }
-    if (cell.hasFlag) {
-      cellEl.textContent = '🚩'
-    }
-    if (!cell.isRevealed && !cell.hasFlag) {
-      cellEl.textContent = ''
-    }
+    if (cell.hasFlag) cellEl.textContent = '🚩'
+    if (!cell.isRevealed && !cell.hasFlag) cellEl.textContent = ''
   })
+}
+
+function renderTime() {
+  firstClick = 0
+  if (!gameOver) {
+    if (time < 999) {
+      time++
+      countUpEl.textContent = time
+    }
+  }
 }
 
 /*============================= Helper Functions =============================*/
