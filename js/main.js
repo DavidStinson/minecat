@@ -95,6 +95,8 @@ let colorMode = {
   },
 }
 
+const explosionMedia = new Audio('../media/explosion.wav')
+
 /*-----------------------------------------------------------------------------
 ==================================== Cache ====================================
 -----------------------------------------------------------------------------*/
@@ -256,6 +258,7 @@ function handleCellClick(evnt) {
     if (cell.hasBomb) {
       cell.isRevealed = true
       cellEl.classList.add('animated', 'flash')
+      explosionMedia.play()
       gameOver = -1
     } else if (cell.hasNeighboringBombs) {
       cell.isRevealed = true
