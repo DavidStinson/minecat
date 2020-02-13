@@ -12,6 +12,7 @@ let cells = null
 let cellsWithBombs = null
 let gameOver = null
 let cellsToBeRevealed = null
+let firstClick = null
 let cellEls = []
 
 /*-----------------------------------------------------------------------------
@@ -84,12 +85,10 @@ let colorMode = {
       this.light = 1
       this.dark = 0
       this.change = true
-      console.log('changing to light')
     } else {
       this.light = 0
       this.dark = 1
       this.change = true
-      console.log('changing to dark')
     }
     preRender()
   },
@@ -113,7 +112,7 @@ const bodyEl = document.querySelector('body')
 
 gameboardEl.addEventListener('click', handleCellClick)
 gameboardEl.addEventListener('auxclick', handleCellAuxClick)
-mineCatEl.addEventListener('click', checkForEndGame)
+mineCatEl.addEventListener('click', init)
 
 /*-----------------------------------------------------------------------------
 ================================= Functions ===================================
@@ -127,16 +126,19 @@ function init() {
   // Don't allow user to set less than 12 columns
   rows = 10
   columns = 14
-  playerFlags = 20
-  bombs = 20
+  playerFlags = bombs = 10
   time = 999
   gameOver = cellCount = cellsWithBombs = 0
   cells = []
   cellEls = []
+  while (gameboardEl.firstChild) {
+    gameboardEl.removeChild(gameboardEl.firstChild)
+  }
   boardBuilder()
   cellBuilder()
   plantBombs()
   placeNumbers()
+  preRender()
 }
 
 /*========================= Board and Cell Creation =========================*/
@@ -261,14 +263,14 @@ function handleCellClick(evnt) {
 
 function handleCellAuxClick(evnt) {
   let cell = cells[evnt.target.id]
-  if (!gameOver && playerFlags) {
-    if (!cell.isRevealed) {
+  if (!gameOver && !cell.isRevealed) {
+    if (playerFlags) {
       cell.hasFlag
         ? ((cell.hasFlag = false), playerFlags++)
         : ((cell.hasFlag = true), playerFlags--)
+    } else {
+      flagCountEl.classList.add('animated', 'flash')
     }
-  } else {
-    //FLASH FLAG COUNTER HERE
   }
   preRender()
 }
@@ -286,6 +288,7 @@ function checkForEndGame() {
   if (gameOver) {
     cells.forEach(cell => {
       cell.isRevealed = true
+      cellEls[cell.id].classList.add('animated', 'flash')
     })
   }
   preRender()
@@ -309,7 +312,6 @@ function preRender() {
       mineCatEl.classList.replace('light', 'dark')
       countdownEl.classList.replace('light', 'dark')
       cellEls.forEach(cellEl => cellEl.classList.replace('light', 'dark'))
-      console.log('pre-render dark')
     } else {
       boundingEl.classList.replace('dark', 'light')
       titleEl.classList.replace('dark', 'light')
@@ -317,7 +319,6 @@ function preRender() {
       mineCatEl.classList.replace('dark', 'light')
       countdownEl.classList.replace('dark', 'light')
       cellEls.forEach(cellEl => cellEl.classList.replace('dark', 'light'))
-      console.log('pre-render light')
     }
     colorMode.change = false
   }
@@ -325,6 +326,7 @@ function preRender() {
 }
 
 function render() {
+  flagCountEl.textContent = playerFlags
   cellEls.forEach((cellEl, idx) => {
     let cell = cells[idx]
     if (cell.isRevealed) {
@@ -337,6 +339,12 @@ function render() {
       } else {
         cellEl.textContent = ''
       }
+    }
+    if (cell.hasFlag) {
+      cellEl.textContent = '🚩'
+    }
+    if (!cell.isRevealed && !cell.hasFlag) {
+      cellEl.textContent = ''
     }
   })
 }
