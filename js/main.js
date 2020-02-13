@@ -135,11 +135,11 @@ function init() {
   cells = []
   cellEls = []
   firstClick = 1
+  clearInterval(timer)
   timer = 0
   flagCountEl.textContent = playerFlags
   countUpEl.textContent = '0'
   mineCatEl.textContent = '😸'
-  clearInterval(timer)
   while (gameboardEl.firstChild) {
     gameboardEl.removeChild(gameboardEl.firstChild)
   }
@@ -357,6 +357,8 @@ function render() {
   })
 }
 
+/*============================= Helper Functions =============================*/
+
 function renderTime() {
   firstClick = 0
   if (!gameOver) {
@@ -366,8 +368,6 @@ function renderTime() {
     }
   }
 }
-
-/*============================= Helper Functions =============================*/
 
 function getRandomIntInclusive(minNum, maxNum) {
   minNum = Math.ceil(minNum)

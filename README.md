@@ -4,6 +4,10 @@ This is a minesweeper re-creation! Like Minesweeper, cells on the board can be c
 
 ## [Play the game here](https://davidstinson.github.io/mineland/)
 
+## Wireframe
+
+![https://i.imgur.com/gATeVcB.png](https://i.imgur.com/gATeVcB.png)
+
 ## Screenshots
 
 ![https://i.imgur.com/i0HEAhG.png](https://i.imgur.com/i0HEAhG.png)
