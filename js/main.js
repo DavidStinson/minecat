@@ -12,8 +12,9 @@ let cells = null
 let cellsWithBombs = null
 let gameOver = null
 let cellsToBeRevealed = null
+let timer = null
+let cellEls = null
 let firstClick = null
-let cellEls = []
 
 /*-----------------------------------------------------------------------------
 ============================= Objects and Classes =============================
@@ -126,13 +127,17 @@ function init() {
   // Don't allow user to set less than 12 columns
   rows = 25
   columns = 45
-  playerFlags = bombs = 80
+  playerFlags = bombs = 100
   time = 0
   gameOver = cellCount = cellsWithBombs = 0
   cells = []
   cellEls = []
   firstClick = 1
+  timer = 0
+  flagCountEl.textContent = playerFlags
+  countUpEl.textContent = '0'
   mineCatEl.textContent = '😸'
+  clearInterval(timer)
   while (gameboardEl.firstChild) {
     gameboardEl.removeChild(gameboardEl.firstChild)
   }
@@ -243,7 +248,7 @@ Fill cells with a number and mark them as revealed. We are now done with edges*/
 
 function handleCellClick(evnt) {
   if (firstClick) {
-    setInterval(renderTime, 1000)
+    timer = setInterval(renderTime, 1000)
   }
   let cell = cells[evnt.target.id]
   let cellEl = cellEls[evnt.target.id]
