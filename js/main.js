@@ -129,7 +129,7 @@ function init() {
   // Don't allow user to set less than 12 columns
   rows = 25
   columns = 45
-  flagCount = bombs = 100
+  flagCount = bombs = 10
   time = 0
   gameOver = cellCount = cellsWithBombs = 0
   cells = []
@@ -137,7 +137,6 @@ function init() {
   firstClick = 1
   clearInterval(timer)
   timer = 0
-  flagCountEl.textContent = formatNumberWithPadding(flagCount, '0', 3)
   timeEl.textContent = '000'
   mineCatEl.textContent = '😸'
   while (gameboardEl.firstChild) {
