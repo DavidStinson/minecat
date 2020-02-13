@@ -4,8 +4,8 @@
 
 @font-face {
     font-family: 'lcdmonobold';
-    src: url('lcdmb___-webfont.woff2') format('woff2'),
-         url('lcdmb___-webfont.woff') format('woff');
+    src: url('lcdbold.woff2') format('woff2'),
+         url('lcdbold.woff') format('woff');
     font-weight: normal;
     font-style: normal;
 

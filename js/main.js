@@ -96,6 +96,7 @@ let colorMode = {
 }
 
 const explosionMedia = new Audio('../media/explosion.wav')
+const yayMedia = new Audio('../media/yay.mp3')
 
 /*-----------------------------------------------------------------------------
 ==================================== Cache ====================================
@@ -294,6 +295,7 @@ function checkForEndGame() {
   })
   if (!gameOver && cellsToBeRevealed === bombs) {
     gameOver = 1
+    yayMedia.play()
   }
   if (gameOver) {
     cells.forEach(cell => {

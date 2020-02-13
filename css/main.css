@@ -44,6 +44,7 @@ main.light {
   text-align: center;
   margin: auto;
   font-family: lcdmonobold;
+  font-size: 40px;
 }
 
 #flag-count {
@@ -51,6 +52,7 @@ main.light {
   margin: auto;
   flex-grow: 1;
   font-family: lcdmonobold;
+  font-size: x-large;
 }
 
 #mine-cat-cage {
@@ -88,6 +90,7 @@ main.light {
   margin: auto;
   flex-grow: 1;
   font-family: lcdmonobold;
+  font-size: x-large;
 }
 
 #gameboard {
