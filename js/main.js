@@ -126,7 +126,7 @@ function init() {
   // Don't allow user to set less than 12 columns
   rows = 25
   columns = 45
-  playerFlags = bombs = 10
+  playerFlags = bombs = 40
   time = 0
   gameOver = cellCount = cellsWithBombs = 0
   cells = []
