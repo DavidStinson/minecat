@@ -384,7 +384,7 @@ nav.dark {
 
 .nav-button {
   border: 0;
-  width: 31px;
+  width: 32px;
   font-size: x-large;
 }
 
@@ -437,7 +437,6 @@ nav.dark {
   font-size: x-large;
   background-color: darkgray;
 }
-
 
 #pos-columns-btn {
   border-right: 1px solid #8e8e8e;

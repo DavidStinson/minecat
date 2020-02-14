@@ -16,11 +16,12 @@ let timer = null
 let cellEls = null
 let firstClick = null
 let pageLoad = 1
+let bombsInPlay = null
 
 /*-----------------------------------------------------------------------------
 ============================= Objects and Classes =============================
 -----------------------------------------------------------------------------*/
-// Object constructor for cells
+
 class Cell {
   constructor(
     id,
@@ -181,7 +182,7 @@ function init() {
     bombs = ((rows - 2) * (columns - 2)) / 2
   }
   if (bombs < 5) bombs = 5
-  flagCount = bombs
+  bombsInPlay = flagCount = bombs
   time = 0
   gameOver = cellCount = cellsWithBombs = 0
   cells = []
@@ -263,7 +264,7 @@ function cellBuilder() {
 }
 
 function plantBombs() {
-  while (cellsWithBombs < bombs) {
+  while (cellsWithBombs < bombsInPlay) {
     let cellId = getRandomIntInclusive(0, cells.length - 1)
     if (!cells[cellId].hasBomb) {
       cells[cellId].hasBomb = true
@@ -307,7 +308,7 @@ function checkForEndGame() {
       cellsToBeRevealed++
     }
   })
-  if (!gameOver && cellsToBeRevealed === bombs) {
+  if (!gameOver && cellsToBeRevealed === bombsInPlay) {
     gameOver = 1
     confetti.render()
     yayMedia.play()
