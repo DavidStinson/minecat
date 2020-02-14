@@ -80,19 +80,19 @@ class Cell {
 let colorMode = {
   dark: 0,
   light: 1,
-	change: false,
-	colorStr: "light",
+  change: false,
+  colorStr: 'light',
   changeColorMode: function() {
     if (this.dark) {
       this.light = 1
       this.dark = 0
-			this.change = true
-			this.colorStr = "light"
+      this.change = true
+      this.colorStr = 'light'
     } else {
       this.light = 0
       this.dark = 1
-			this.change = true
-			this.colorStr = "dark"
+      this.change = true
+      this.colorStr = 'dark'
     }
     preRender()
   },
@@ -135,12 +135,12 @@ const posBombsBtnEl = document.querySelector('#pos-bombs-btn')
 gameboardEl.addEventListener('click', handleCellClick)
 gameboardEl.addEventListener('auxclick', handleCellAuxClick)
 mineCatEl.addEventListener('click', init)
-subColumnsBtnEl.addEventListener('click', subFromInputField, "columns")
-posColumnsBtnEl.addEventListener('click', posToInputField, "columns")
-subRowsBtnEl.addEventListener('click', subFromInputField, "rows")
-posRowsBtnEl.addEventListener('click', posToInputField, "rows")
-subBombsBtnEl.addEventListener('click', subFromInputField, "bombs")
-posBombsBtnEl.addEventListener('click', posToInputField, "bombs")
+subColumnsBtnEl.addEventListener('click', handleSubFromInputField, 'columns')
+posColumnsBtnEl.addEventListener('click', handlePosToInputField, 'columns')
+subRowsBtnEl.addEventListener('click', handleSubFromInputField, 'rows')
+posRowsBtnEl.addEventListener('click', handlePosToInputField, 'rows')
+subBombsBtnEl.addEventListener('click', handleSubFromInputField, 'bombs')
+posBombsBtnEl.addEventListener('click', handlePosToInputField, 'bombs')
 columnsInputEl
 rowsInputEl
 bombsInputEl
@@ -414,3 +414,25 @@ function getRandomIntInclusive(minNum, maxNum) {
 }
 
 init()
+
+function subFromInputField(fieldStr) {
+  if (fieldStr === 'columns') {
+    if (
+      !isNaN(parseInt(columnsInputEl.value)) &&
+      columns > 10 &&
+      columns < 51
+    ) {
+      columns += parseInt(columnsInputEl.value)
+    }
+  } else if (fieldStr === 'rows') {
+  } else {
+  }
+
+  total += parseInt(input1.value)
+  if (isNaN(total)) {
+    a
+    total = 'You must input a number.'
+    message.style.color = 'red'
+  }
+  render()
+}
