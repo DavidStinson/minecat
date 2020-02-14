@@ -135,29 +135,33 @@ const posBombsBtnEl = document.querySelector('#pos-bombs-btn')
 gameboardEl.addEventListener('click', handleCellClick)
 gameboardEl.addEventListener('auxclick', handleCellAuxClick)
 mineCatEl.addEventListener('click', init)
-subColumnsBtnEl.addEventListener('click', handleSubFromInputField, 'columns')
-posColumnsBtnEl.addEventListener('click', handlePosToInputField, 'columns')
-subRowsBtnEl.addEventListener('click', handleSubFromInputField, 'rows')
-posRowsBtnEl.addEventListener('click', handlePosToInputField, 'rows')
-subBombsBtnEl.addEventListener('click', handleSubFromInputField, 'bombs')
-posBombsBtnEl.addEventListener('click', handlePosToInputField, 'bombs')
-columnsInputEl
-rowsInputEl
-bombsInputEl
+subColumnsBtnEl.addEventListener('click', handleSubFromInputField)
+posColumnsBtnEl.addEventListener('click', handlePosToInputField)
+subRowsBtnEl.addEventListener('click', handleSubFromInputField)
+posRowsBtnEl.addEventListener('click', handlePosToInputField)
+subBombsBtnEl.addEventListener('click', handleSubFromInputField)
+posBombsBtnEl.addEventListener('click', handlePosToInputField)
 
 /*-----------------------------------------------------------------------------
 ================================= Functions ===================================
 -----------------------------------------------------------------------------*/
 
-// *EVENTUALLY* Querry the user for everything, or query them to choose a
-// *difficulty
 function init() {
   /* 2 rows and columns are added compared to what the user inputs, because the 
 	first and last of each are hidden from the user view*/
   // Don't allow user to set less than 12 columns
-  rows = 10
-  columns = 12
-  flagCount = bombs = 10
+  rows = parseInt(rowsInputEl.value) + 2
+  if (rows > 52) rows = 52
+  if (rows < 12) rows = 12
+  columns = parseInt(columnsInputEl.value) + 2
+  if (columns > 72) columns = 72
+  if (columns < 12) columns = 12
+  bombs = parseInt(bombsInputEl.value)
+  if (bombs > ((rows - 2) * (columns - 2)) / 2) {
+    bombs = ((rows - 2) * (columns - 2)) / 2
+  }
+  if (bombs < 5) bombs = 5
+  flagCount = bombs
   time = 0
   gameOver = cellCount = cellsWithBombs = 0
   cells = []
@@ -273,6 +277,26 @@ Fill cells with a number and mark them as revealed. We are now done with edges*/
   })
 }
 
+function checkForEndGame() {
+  cellsToBeRevealed = null
+  cells.forEach(cell => {
+    if (!cell.isRevealed) {
+      cellsToBeRevealed++
+    }
+  })
+  if (!gameOver && cellsToBeRevealed === bombs) {
+    gameOver = 1
+    yayMedia.play()
+  }
+  if (gameOver) {
+    cells.forEach(cell => {
+      cell.isRevealed = true
+      cellEls[cell.id].classList.add('animated', 'flash')
+    })
+  }
+  preRender()
+}
+
 /*============================= Event Functions =============================*/
 
 function handleCellClick(evnt) {
@@ -313,22 +337,41 @@ function handleCellAuxClick(evnt) {
   preRender()
 }
 
-function checkForEndGame() {
-  cellsToBeRevealed = null
-  cells.forEach(cell => {
-    if (!cell.isRevealed) {
-      cellsToBeRevealed++
+function handleSubFromInputField(evnt) {
+  let targetBtn = evnt.target.id
+  if (targetBtn === 'sub-columns-btn') {
+    if (!isNaN(parseInt(columnsInputEl.value)) && columns > 12) {
+      columns = parseInt(columnsInputEl.value) + 1
     }
-  })
-  if (!gameOver && cellsToBeRevealed === bombs) {
-    gameOver = 1
-    yayMedia.play()
+  } else if (targetBtn === 'sub-rows-btn') {
+    if (!isNaN(parseInt(rowsInputEl.value)) && rows > 10) {
+      rows = parseInt(rowsInputEl.value) + 1
+    }
+  } else {
+    if (!isNaN(parseInt(bombsInputEl.value)) && bombs > 5) {
+      bombs = parseInt(bombsInputEl.value) - 1
+    }
   }
-  if (gameOver) {
-    cells.forEach(cell => {
-      cell.isRevealed = true
-      cellEls[cell.id].classList.add('animated', 'flash')
-    })
+  preRender()
+}
+
+function handlePosToInputField(evnt) {
+  let targetBtn = evnt.target.id
+  if (targetBtn === 'pos-columns-btn') {
+    if (!isNaN(parseInt(columnsInputEl.value)) && columns < 72) {
+      columns = parseInt(columnsInputEl.value) + 3
+    }
+  } else if (targetBtn === 'pos-rows-btn') {
+    if (!isNaN(parseInt(rowsInputEl.value)) && rows < 52) {
+      rows = parseInt(rowsInputEl.value) + 3
+    }
+  } else {
+    if (
+      !isNaN(parseInt(bombsInputEl.value)) &&
+      bombs < ((rows - 2) * (columns - 2)) / 2
+    ) {
+      bombs = parseInt(bombsInputEl.value) + 1
+    }
   }
   preRender()
 }
@@ -384,6 +427,11 @@ function render() {
     if (cell.hasFlag) cellEl.textContent = '🚩'
     if (!cell.isRevealed && !cell.hasFlag) cellEl.textContent = ''
   })
+  console.log(parseInt(columns))
+  console.log(parseInt(rows))
+  columnsInputEl.value = parseInt(columns) - 2 + ''
+  rowsInputEl.value = parseInt(rows) - 2 + ''
+  bombsInputEl.value = bombs
 }
 
 function renderTime() {
@@ -414,25 +462,3 @@ function getRandomIntInclusive(minNum, maxNum) {
 }
 
 init()
-
-function subFromInputField(fieldStr) {
-  if (fieldStr === 'columns') {
-    if (
-      !isNaN(parseInt(columnsInputEl.value)) &&
-      columns > 10 &&
-      columns < 51
-    ) {
-      columns += parseInt(columnsInputEl.value)
-    }
-  } else if (fieldStr === 'rows') {
-  } else {
-  }
-
-  total += parseInt(input1.value)
-  if (isNaN(total)) {
-    a
-    total = 'You must input a number.'
-    message.style.color = 'red'
-  }
-  render()
-}
