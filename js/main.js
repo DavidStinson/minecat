@@ -80,16 +80,19 @@ class Cell {
 let colorMode = {
   dark: 0,
   light: 1,
-  change: false,
+	change: false,
+	colorStr: "light",
   changeColorMode: function() {
     if (this.dark) {
       this.light = 1
       this.dark = 0
-      this.change = true
+			this.change = true
+			this.colorStr = "light"
     } else {
       this.light = 0
       this.dark = 1
-      this.change = true
+			this.change = true
+			this.colorStr = "dark"
     }
     preRender()
   },
@@ -102,13 +105,28 @@ const yayMedia = new Audio('../media/yay.mp3')
 ==================================== Cache ====================================
 -----------------------------------------------------------------------------*/
 
+// Query these elements only to style them.
+const bodyEl = document.querySelector('body')
 const boundingEl = document.querySelector('main')
+// Query these for logic
 const titleEl = document.querySelector('#title')
 const flagCountEl = document.querySelector('#flag-count')
 const mineCatEl = document.querySelector('#mine-cat')
 const timeEl = document.querySelector('#time')
 const gameboardEl = document.querySelector('#gameboard')
-const bodyEl = document.querySelector('body')
+const navEl = document.querySelector('.nav')
+const navBtnEl = document.querySelectorAll('.nav-button')
+// Nav bar elements
+const lightDarkBtnEl = document.querySelector('#light-dark-btn')
+const subColumnsBtnEl = document.querySelector('#sub-columns-btn')
+const columnsInputEl = document.querySelector('#columns-input')
+const posColumnsBtnEl = document.querySelector('#pos-columns-btn')
+const subRowsBtnEl = document.querySelector('#sub-rows-btn')
+const rowsInputEl = document.querySelector('#rows-input')
+const posRowsBtnEl = document.querySelector('#pos-rows-btn')
+const subBombsBtnEl = document.querySelector('#sub-bombs-btn')
+const bombsInputEl = document.querySelector('#bombs-input')
+const posBombsBtnEl = document.querySelector('#pos-bombs-btn')
 
 /*-----------------------------------------------------------------------------
 =============================== Event Listeners ===============================
@@ -117,6 +135,15 @@ const bodyEl = document.querySelector('body')
 gameboardEl.addEventListener('click', handleCellClick)
 gameboardEl.addEventListener('auxclick', handleCellAuxClick)
 mineCatEl.addEventListener('click', init)
+subColumnsBtnEl.addEventListener('click', subFromInputField, "columns")
+posColumnsBtnEl.addEventListener('click', posToInputField, "columns")
+subRowsBtnEl.addEventListener('click', subFromInputField, "rows")
+posRowsBtnEl.addEventListener('click', posToInputField, "rows")
+subBombsBtnEl.addEventListener('click', subFromInputField, "bombs")
+posBombsBtnEl.addEventListener('click', posToInputField, "bombs")
+columnsInputEl
+rowsInputEl
+bombsInputEl
 
 /*-----------------------------------------------------------------------------
 ================================= Functions ===================================

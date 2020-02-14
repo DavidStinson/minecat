@@ -71,7 +71,7 @@ main.light {
   flex-grow: 1;
   font-family: lcdmonobold;
   font-size: x-large;
-  color: #e3e3e3;
+  color: #fff5f6;
   text-shadow: 0 0 2px #000, 0 0 10px #fc1f2c75, 0 0 5px #fc1f2c75,
     2px 2px 25px #851e2575;
 }
@@ -112,7 +112,7 @@ main.light {
   flex-grow: 1;
   font-family: lcdmonobold;
   font-size: x-large;
-  color: #e3e3e3;
+  color: #fff5f6;
   text-shadow: 0 0 2px #000, 0 0 10px #fc1f2c75, 0 0 5px #fc1f2c75,
     2px 2px 25px #851e2575;
 }
@@ -209,20 +209,95 @@ nav {
   grid-area: nav;
   margin: auto;
   display: flex;
-  justify-content: space-around;
+  justify-content: flex-start;
   border-radius: 20px;
-  background-color: #e3e3e3;
-  box-shadow: -12px -12px 12px 0 rgba(255, 255, 255, 0.8),
-    12px 12px 12px 0 rgba(0, 0, 0, 0.6);
+
   width: 480px;
   height: 70px;
   flex-wrap: nowrap;
+  font-family: lcdmonobold;
 }
 
 nav.light {
+  background-color: #e3e3e3;
+  box-shadow: -12px -12px 12px 0 rgba(255, 255, 255, 0.8),
+    12px 12px 12px 0 rgba(0, 0, 0, 0.6);
 }
 
-button#light-dark {
-  background-color: transparent;
+button#light-dark-btn {
   border: 0;
+  width: 80px;
+  border-radius: 20px 0px 0px 20px;
+  font-size: x-large;
+  font-family: lcdmonobold;
+}
+
+button#light-dark-btn.light {
+  background-color: #3e3e3e;
+  color: #fdfdfd;
+  text-shadow: 0 0 2px #001716, 0 0 3px #03edf975, 0 0 5px #03edf975,
+    0 0 8px #03edf975;
+}
+
+.nav-button {
+  border: 0;
+  width: 31px;
+  font-size: x-large;
+}
+
+.nav-button.light {
+  background-color: #e3e3e3;
+}
+
+.nav-button.light:hover {
+  background-color: #f3f3f3;
+}
+
+.nav-button.light:active {
+  background-color: #c3c3c3;
+  box-shadow: inset -2px -2px 5px rgba(255, 255, 255, 1),
+    inset 2px 2px 5px rgba(0, 0, 0, 0.7);
+}
+
+.nav-cell {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: space-evenly;
+  vertical-align: middle;
+}
+
+.nav-text {
+  margin: auto;
+}
+
+.nav-input {
+  width: 63px;
+  height: 30px;
+  text-align: center;
+  font-family: lcdmonobold;
+  font-size: x-large;
+}
+
+#pos-columns-btn {
+  border-right: 1px solid #8e8e8e;
+}
+
+#pos-rows-btn {
+  border-right: 1px solid #8e8e8e;
+}
+
+#pos-bombs-btn {
+  border-radius: 0 20px 20px 0;
+  width: 32px;
+}
+
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type='number'] {
+  -moz-appearance: textfield; /* Firefox */
 }

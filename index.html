@@ -29,9 +29,50 @@
           class="light"
         ></section>
       </main>
-      <nav>
-        <button id="light-dark" class="light">light-dark</button>
-        <button id =""
+      <nav class="light">
+        <button id="light-dark" class="light">Dark</button>
+        <button id="sub-columns-btn" class="nav-button light">-</button>
+        <div class="nav-cell">
+          <p class="nav-text">Columns</p>
+          <input
+            value="10"
+            class="nav-input light"
+            id="columns-input"
+            type="number"
+            required
+            min="10"
+            max="50"
+          />
+        </div>
+        <button id="pos-columns-btn" class="nav-button light">+</button>
+        <button id="sub-rows-btn" class="nav-button light">-</button>
+        <div class="nav-cell">
+          <p class="nav-text">Rows</p>
+          <input
+            value="10"
+            id="rows-input"
+            class="nav-input light"
+            type="number"
+            required
+            min="10"
+            max="50"
+          />
+        </div>
+        <button id="pos-rows-btn" class="nav-button light">+</button>
+        <button id="sub-bombs-btn" class="nav-button light">-</button>
+        <div class="nav-cell">
+          <p class="nav-text">Bombs</p>
+          <input
+            value="10"
+            id="bombs-input"
+            class="nav-input light"
+            type="number"
+            required
+            min="10"
+            max="750"
+          />
+        </div>
+        <button id="pos-bombs-btn" class="nav-button light">+</button>
       </nav>
       <div id="edge"></div>
     </section>
