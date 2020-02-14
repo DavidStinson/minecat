@@ -98,6 +98,23 @@ let colorMode = {
   },
 }
 
+var confettiSettings = {
+  target: 'my-canvas',
+  size: 2,
+  start_from_edge: true,
+  props: ['square', 'circle', 'triangle', 'line'],
+  rotate: true,
+  colors: [
+    [62, 62, 62],
+    [245, 245, 245],
+    [138, 62, 59],
+    [209, 95, 71],
+    [70, 143, 158],
+    [20, 43, 61],
+  ],
+}
+
+const confetti = new ConfettiGenerator(confettiSettings)
 const explosionMedia = new Audio('../media/explosion.wav')
 const yayMedia = new Audio('../media/yay.mp3')
 
