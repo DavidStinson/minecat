@@ -301,3 +301,9 @@ input[type='number']::-webkit-outer-spin-button {
 input[type='number'] {
   -moz-appearance: textfield; /* Firefox */
 }
+
+#my-canvas {
+  float: left;
+  position: fixed;
+  z-index: -1;
+}

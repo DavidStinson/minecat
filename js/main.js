@@ -303,6 +303,7 @@ function checkForEndGame() {
   })
   if (!gameOver && cellsToBeRevealed === bombs) {
     gameOver = 1
+    confetti.render()
     yayMedia.play()
   }
   if (gameOver) {
@@ -444,8 +445,6 @@ function render() {
     if (cell.hasFlag) cellEl.textContent = '🚩'
     if (!cell.isRevealed && !cell.hasFlag) cellEl.textContent = ''
   })
-  console.log(parseInt(columns))
-  console.log(parseInt(rows))
   columnsInputEl.value = parseInt(columns) - 2 + ''
   rowsInputEl.value = parseInt(rows) - 2 + ''
   bombsInputEl.value = bombs
@@ -456,9 +455,7 @@ function renderTime() {
   if (!gameOver) {
     if (time < 999) {
       time++
-      console.log(time)
       let timeStr = formatNumberWithPadding(time, '0', 3)
-      console.log(timeStr)
       timeEl.textContent = timeStr
     }
   }
@@ -476,6 +473,15 @@ function getRandomIntInclusive(minNum, maxNum) {
   minNum = Math.ceil(minNum)
   maxNum = Math.floor(maxNum)
   return Math.floor(Math.random() * (maxNum - minNum + 1)) + minNum
+}
+
+/*============================ Development Tools ============================*/
+
+function iLikeToWin() {
+  cells.forEach(cell => {
+    if (!cell.hasBomb) cell.isRevealed = true
+  })
+  checkForEndGame()
 }
 
 init()
