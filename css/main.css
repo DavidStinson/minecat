@@ -50,7 +50,7 @@ main.light {
 }
 
 main.dark {
-  background-color: ##3e3e3e;
+  background-color: #3e3e3e;
   box-shadow: -12px -12px 12px 0 rgba(255, 255, 255, 0.3),
     12px 12px 12px 0 rgba(0, 0, 0, 0.6);
 }
@@ -187,8 +187,13 @@ main.dark {
 }
 
 #gameboard.light {
-  box-shadow: -4px -4px 4px 0 rgba(255, 255, 255, 0.2),
+  box-shadow: -4px -4px 4px 0 rgba(255, 255, 255, 0.6),
     4px 4px 4px 0 rgba(0, 0, 0, 0.4);
+}
+
+#gameboard.dark {
+  box-shadow: -4px -4px 4px 0 rgba(255, 255, 255, 0.2),
+    4px 4px 4px 0 rgba(0, 0, 0, 0.3);
 }
 
 /* cells */
@@ -196,8 +201,6 @@ main.dark {
 .cell {
   height: 25px;
   width: 25px;
-  box-shadow: inset 2px 2px 5px rgba(255, 255, 255, 1),
-    inset -2px -2px 5px rgba(0, 0, 0, 0.7);
   border: 0;
   margin: 0;
   line-height: 25px;
@@ -207,29 +210,43 @@ main.dark {
   font-family: sans-serif;
 }
 
-.cell.dark {
-  background-color: #3e3e3e;
+.cell.revealed {
+  cursor: not-allowed;
 }
 
 .cell.light {
   background-color: #e3e3e3;
+  box-shadow: inset 2px 2px 5px rgba(255, 255, 255, 1),
+    inset -2px -2px 5px rgba(0, 0, 0, 0.7);
 }
 
 .cell.light:hover {
   background-color: #f3f3f3;
 }
 
-.cell.light.revealed {
-  cursor: not-allowed;
+.cell.revealed.light {
   box-shadow: inset -2px -2px 5px rgba(255, 255, 255, 1),
     inset 2px 2px 5px rgba(0, 0, 0, 0.4);
   background-color: #c3c3c3;
 }
-.cell.light.revealed:hover {
-  background-color: #c3c3c3;
+
+.cell.dark {
+  background-color: #3e3e3e;
+  box-shadow: inset 2px 2px 5px rgba(255, 255, 255, 0.5),
+    inset -2px -2px 5px rgba(0, 0, 0, 0.3);
 }
 
-/* NUMBERS */
+.cell.dark:hover {
+  background-color: #7e7e7e;
+}
+
+.cell.revealed.dark {
+  box-shadow: inset -2px -2px 5px rgba(255, 255, 255, 1),
+    inset 2px 2px 5px rgba(0, 0, 0, 0.4);
+  background-color: #a3a3a3;
+}
+
+/* Cell Numbers */
 
 .cell.light.num1.revealed {
   background-color: #f2acab;
@@ -263,6 +280,38 @@ main.dark {
   background-color: #a11513;
 }
 
+.cell.dark.num1.revealed {
+  background-color: #b9ecfa;
+}
+
+.cell.dark.num2.revealed {
+  background-color: #8bdff7;
+}
+
+.cell.dark.num3.revealed {
+  background-color: #5dd3f4;
+}
+
+.cell.dark.num4.revealed {
+  background-color: #46ccf3;
+}
+
+.cell.dark.num5.revealed {
+  background-color: #18c0f0;
+}
+
+.cell.dark.num6.revealed {
+  background-color: #01aada;
+}
+
+.cell.dark.num7.revealed {
+  background-color: #0199c4;
+}
+
+.cell.dark.num8.revealed {
+  background-color: #0188ae;
+}
+
 /* NAV */
 
 nav {
@@ -284,7 +333,14 @@ nav.light {
     12px 12px 12px 0 rgba(0, 0, 0, 0.6);
 }
 
-button#light-dark-btn {
+nav.dark {
+  background-color: #3e3e3e;
+  box-shadow: -12px -12px 12px 0 rgba(255, 255, 255, 0.3),
+    12px 12px 12px 0 rgba(0, 0, 0, 0.6);
+  color: #e3e3e3;
+}
+
+#light-dark-btn {
   border: 0;
   width: 80px;
   border-radius: 20px 0px 0px 20px;
@@ -292,19 +348,36 @@ button#light-dark-btn {
   font-family: lcdmonobold;
 }
 
-button#light-dark-btn.light {
+#light-dark-btn.light {
   background-color: #3e3e3e;
   color: #fdfdfd;
 }
 
-button#light-dark-btn.light:hover {
+#light-dark-btn.light:hover {
   color: #fdfdfd;
   text-shadow: 0 0 2px #001716, 0 0 3px #03edf975, 0 0 5px #03edf975,
     0 0 8px #03edf975;
 }
 
-button#light-dark-btn.light:active {
+#light-dark-btn.light:active {
   background-color: #c3c3c3;
+  box-shadow: inset -2px -2px 5px rgba(255, 255, 255, 1),
+    inset 2px 2px 5px rgba(0, 0, 0, 0.7);
+}
+
+#light-dark-btn.dark {
+  background-color: #e3e3e3;
+  color: #3e3e3e;
+}
+
+#light-dark-btn.dark:hover {
+  color: #fff5f6;
+  text-shadow: 0 0 2px #000, 0 0 10px #fc1f2c75, 0 0 5px #fc1f2c75,
+    2px 2px 25px #851e2575;
+}
+
+#light-dark-btn.dark:active {
+  background-color: #939393;
   box-shadow: inset -2px -2px 5px rgba(255, 255, 255, 1),
     inset 2px 2px 5px rgba(0, 0, 0, 0.7);
 }
@@ -329,6 +402,21 @@ button#light-dark-btn.light:active {
     inset 2px 2px 5px rgba(0, 0, 0, 0.7);
 }
 
+.nav-button.dark {
+  background-color: #3e3e3e;
+  color: #e3e3e3;
+}
+
+.nav-button.dark:hover {
+  background-color: #5e5e5e;
+}
+
+.nav-button.dark:active {
+  background-color: #5e5e5e;
+  box-shadow: inset -2px -2px 5px rgba(255, 255, 255, 0.5),
+    inset 2px 2px 5px rgba(0, 0, 0, 0.3);
+}
+
 .nav-cell {
   display: flex;
   align-items: center;
@@ -347,7 +435,9 @@ button#light-dark-btn.light:active {
   text-align: center;
   font-family: lcdmonobold;
   font-size: x-large;
+  background-color: darkgray;
 }
+
 
 #pos-columns-btn {
   border-right: 1px solid #8e8e8e;

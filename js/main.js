@@ -143,6 +143,9 @@ const posRowsBtnEl = document.querySelector('#pos-rows-btn')
 const subBombsBtnEl = document.querySelector('#sub-bombs-btn')
 const bombsInputEl = document.querySelector('#bombs-input')
 const posBombsBtnEl = document.querySelector('#pos-bombs-btn')
+// Nav bar element only used for style
+const navBarEl = document.querySelector('nav')
+const navBarBtnEls = document.querySelectorAll('.nav-button')
 
 /*-----------------------------------------------------------------------------
 =============================== Event Listeners ===============================
@@ -169,12 +172,12 @@ function init() {
   // Don't allow user to set less than 12 columns
   rows = parseInt(rowsInputEl.value) + 2
   if (rows > 52) rows = 52
-  if (rows < 12) rows = 12
+  if (rows < 12 || isNaN(rows)) rows = 12
   columns = parseInt(columnsInputEl.value) + 2
   if (columns > 72) columns = 72
-  if (columns < 12) columns = 12
+  if (columns < 12 || isNaN(columns)) columns = 12
   bombs = parseInt(bombsInputEl.value)
-  if (bombs > ((rows - 2) * (columns - 2)) / 2) {
+  if (bombs > ((rows - 2) * (columns - 2)) / 2 || isNaN(columns)) {
     bombs = ((rows - 2) * (columns - 2)) / 2
   }
   if (bombs < 5) bombs = 5
@@ -422,7 +425,14 @@ function preRender() {
       flagCountEl.classList.replace('light', 'dark')
       mineCatEl.classList.replace('light', 'dark')
       timeEl.classList.replace('light', 'dark')
+      gameboardEl.classList.replace('light', 'dark')
       cellEls.forEach(cellEl => cellEl.classList.replace('light', 'dark'))
+      navBarEl.classList.replace('light', 'dark')
+      lightDarkBtnEl.classList.replace('light', 'dark')
+      lightDarkBtnEl.textContent = 'light'
+      navBarBtnEls.forEach(navBarBtnEl =>
+        navBarBtnEl.classList.replace('light', 'dark')
+      )
     } else {
       bodyEl.classList.replace('dark', 'light')
       boundingEl.classList.replace('dark', 'light')
@@ -430,7 +440,14 @@ function preRender() {
       flagCountEl.classList.replace('dark', 'light')
       mineCatEl.classList.replace('dark', 'light')
       timeEl.classList.replace('dark', 'light')
+      gameboardEl.classList.replace('dark', 'light')
       cellEls.forEach(cellEl => cellEl.classList.replace('dark', 'light'))
+      navBarEl.classList.replace('dark', 'light')
+      lightDarkBtnEl.classList.replace('dark', 'light')
+      lightDarkBtnEl.textContent = 'dark'
+      navBarBtnEls.forEach(navBarBtnEl =>
+        navBarBtnEl.classList.replace('dark', 'light')
+      )
     }
     colorMode.change = false
   }
