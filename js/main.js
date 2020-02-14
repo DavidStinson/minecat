@@ -87,12 +87,10 @@ let colorMode = {
       this.light = 1
       this.dark = 0
       this.change = true
-      this.colorStr = 'light'
     } else {
       this.light = 0
       this.dark = 1
       this.change = true
-      this.colorStr = 'dark'
     }
     preRender()
   },
@@ -152,6 +150,7 @@ const posBombsBtnEl = document.querySelector('#pos-bombs-btn')
 gameboardEl.addEventListener('click', handleCellClick)
 gameboardEl.addEventListener('auxclick', handleCellAuxClick)
 mineCatEl.addEventListener('click', init)
+lightDarkBtnEl.addEventListener('click', handleColorModeSwitch)
 subColumnsBtnEl.addEventListener('click', handleSubFromInputField)
 posColumnsBtnEl.addEventListener('click', handlePosToInputField)
 subRowsBtnEl.addEventListener('click', handleSubFromInputField)
@@ -195,7 +194,7 @@ function init() {
   cellBuilder()
   plantBombs()
   placeNumbers()
-  preRender()
+  checkUserColorSchemePreference()
 }
 
 /*========================= Board and Cell Creation =========================*/
@@ -245,7 +244,10 @@ function cellBuilder() {
       } else {
         let newCellEl = document.createElement('div')
         newCellEl.setAttribute('id', cellCount)
-        newCellEl.classList.add('cell', 'light')
+        newCellEl.classList.add('cell')
+        colorMode.dark
+          ? newCellEl.classList.add('dark')
+          : newCellEl.classList.add('light')
         gameboardEl.appendChild(newCellEl)
         cellEls.push(newCellEl)
       }
@@ -394,12 +396,23 @@ function handlePosToInputField(evnt) {
   preRender()
 }
 
+function handleColorModeSwitch() {
+  colorMode.changeColorMode()
+}
+
 /*================================== Render ==================================*/
+
+function checkUserColorSchemePreference() {
+  if (window.matchMedia('(prefers-color-scheme:dark)').matches) {
+    colorMode.changeColorMode()
+  }
+  preRender()
+}
 
 function preRender() {
   if (colorMode.change) {
     if (colorMode.dark) {
-      body.classList.replace('light', 'dark')
+      bodyEl.classList.replace('light', 'dark')
       boundingEl.classList.replace('light', 'dark')
       titleEl.classList.replace('light', 'dark')
       flagCountEl.classList.replace('light', 'dark')
@@ -407,6 +420,7 @@ function preRender() {
       timeEl.classList.replace('light', 'dark')
       cellEls.forEach(cellEl => cellEl.classList.replace('light', 'dark'))
     } else {
+      bodyEl.classList.replace('dark', 'light')
       boundingEl.classList.replace('dark', 'light')
       titleEl.classList.replace('dark', 'light')
       flagCountEl.classList.replace('dark', 'light')

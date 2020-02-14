@@ -1,9 +1,18 @@
+@media (prefers-color-scheme: dark) {
+}
+
+/* Body and main containers */
+
 body {
   font-family: lcdmonobold;
 }
 
 body.light {
   background-color: #e3e3e3;
+}
+
+body.dark {
+  background-color: #3e3e3e;
 }
 
 section#wrapper {
@@ -40,6 +49,14 @@ main.light {
     12px 12px 12px 0 rgba(0, 0, 0, 0.6);
 }
 
+main.dark {
+  background-color: ##3e3e3e;
+  box-shadow: -12px -12px 12px 0 rgba(255, 255, 255, 0.3),
+    12px 12px 12px 0 rgba(0, 0, 0, 0.6);
+}
+
+/* Items inside the main container*/
+
 #header {
   grid-area: header;
   display: grid;
@@ -48,7 +65,6 @@ main.light {
   grid-template-areas:
     'title'
     'sub-head';
-  font-family: sans-serif;
 }
 
 #sub-head {
@@ -65,6 +81,15 @@ main.light {
   font-size: 40px;
 }
 
+#title.light {
+  color: #000000;
+}
+
+#title.dark {
+  color: #e3e3e3;
+  text-shadow: 1px 1px 2px gray;
+}
+
 #flag-count {
   text-align: center;
   margin: auto;
@@ -74,6 +99,15 @@ main.light {
   color: #fff5f6;
   text-shadow: 0 0 2px #000, 0 0 10px #fc1f2c75, 0 0 5px #fc1f2c75,
     2px 2px 25px #851e2575;
+}
+
+#flag-count.light {
+}
+
+#flag-count.dark {
+  color: #fdfdfd;
+  text-shadow: 0 0 2px #001716, 0 0 3px #03edf975, 0 0 5px #03edf975,
+    0 0 8px #03edf975;
 }
 
 #mine-cat-cage {
@@ -235,8 +269,18 @@ button#light-dark-btn {
 button#light-dark-btn.light {
   background-color: #3e3e3e;
   color: #fdfdfd;
+}
+
+button#light-dark-btn.light:hover {
+  color: #fdfdfd;
   text-shadow: 0 0 2px #001716, 0 0 3px #03edf975, 0 0 5px #03edf975,
     0 0 8px #03edf975;
+}
+
+button#light-dark-btn.light:active {
+  background-color: #c3c3c3;
+  box-shadow: inset -2px -2px 5px rgba(255, 255, 255, 1),
+    inset 2px 2px 5px rgba(0, 0, 0, 0.7);
 }
 
 .nav-button {
