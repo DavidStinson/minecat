@@ -4,10 +4,6 @@ This is a minesweeper re-creation! Like Minesweeper, cells on the board can be c
 
 ## [Play the game here](https://davidstinson.github.io/mineland/)
 
-## Wireframe
-
-![https://i.imgur.com/gATeVcB.png](https://i.imgur.com/gATeVcB.png)
-
 ## Screenshots
 
 ![https://i.imgur.com/i0HEAhG.png](https://i.imgur.com/i0HEAhG.png)
@@ -27,16 +23,19 @@ This is a minesweeper re-creation! Like Minesweeper, cells on the board can be c
 ## Credits
 
 - Uses Animate.css by Daniel Eden. Get it at: [GitHub](https://daneden.github.io/animate.css/)
-- Uses Explosion Test by Apenguin73. Get it at [freesound.org](https://freesound.org/people/Apenguin73/sounds/335152/)
+- Uses Explosion Test by Apenguin73. Get it at: [freesound.org](https://freesound.org/people/Apenguin73/sounds/335152/)
+- Uses yay by zut50. Get it at: [freesound.org](https://freesound.org/people/zut50/sounds/162395/)
 
 ---
 
 ## Ice Box
 
-- [ ] Add functionality to let user choose rows, columns, and number of bombs
-- [ ] Font design
-- [ ] Dark Mode
-- [ ] Add flags on touchscreen device
-- [ ] Accessibility features (keyboard input, colorblind settings)
-- [ ] Animations
-- [ ] Sound
+- [ ]  Add functionality to let user choose rows, columns, and number of bombs
+- [x]  Font design
+- [ ]  Halo around fonts
+- [ ]  Dark Mode
+- [x]  Fix flag display
+- [ ]  Add flags on touchscreen device
+- [ ]  Accessibility features (keyboard input, colorblind settings)
+- [ ]  Animations
+- [x]  Sound

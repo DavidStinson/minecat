@@ -128,8 +128,8 @@ function init() {
   /* 2 rows and columns are added compared to what the user inputs, because the 
 	first and last of each are hidden from the user view*/
   // Don't allow user to set less than 12 columns
-  rows = 25
-  columns = 45
+  rows = 10
+  columns = 12
   flagCount = bombs = 10
   time = 0
   gameOver = cellCount = cellsWithBombs = 0

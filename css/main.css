@@ -1,9 +1,27 @@
+body {
+  font-family: lcdmonobold;
+}
+
 body.light {
   background-color: #e3e3e3;
 }
 
+section#wrapper {
+  display: grid;
+  margin: auto;
+  grid-template-columns: 40px auto 40px;
+  grid-template-rows: 40px auto 40px 120px 40px;
+  grid-template-areas:
+    '. . .'
+    '. main .'
+    '. . .'
+    '. nav .'
+    '. . edge';
+}
+
 main {
-  margin: 40px auto auto auto;
+  grid-area: main;
+  margin: auto;
   display: grid;
   border-radius: 20px;
   grid-template-columns: 15px auto 15px;
@@ -53,6 +71,9 @@ main.light {
   flex-grow: 1;
   font-family: lcdmonobold;
   font-size: x-large;
+  color: #e3e3e3;
+  text-shadow: 0 0 2px #000, 0 0 10px #fc1f2c75, 0 0 5px #fc1f2c75,
+    2px 2px 25px #851e2575;
 }
 
 #mine-cat-cage {
@@ -91,6 +112,9 @@ main.light {
   flex-grow: 1;
   font-family: lcdmonobold;
   font-size: x-large;
+  color: #e3e3e3;
+  text-shadow: 0 0 2px #000, 0 0 10px #fc1f2c75, 0 0 5px #fc1f2c75,
+    2px 2px 25px #851e2575;
 }
 
 #gameboard {
@@ -103,6 +127,10 @@ main.light {
 #gameboard.light {
   box-shadow: -4px -4px 4px 0 rgba(255, 255, 255, 0.4),
     4px 4px 4px 0 rgba(0, 0, 0, 0.7);
+}
+
+#edge {
+  grid-area: edge;
 }
 
 .cell {
@@ -173,4 +201,28 @@ main.light {
 
 .cell.light.num8.revealed {
   background-color: #a11513;
+}
+
+/* NAV */
+
+nav {
+  grid-area: nav;
+  margin: auto;
+  display: flex;
+  justify-content: space-around;
+  border-radius: 20px;
+  background-color: #e3e3e3;
+  box-shadow: -12px -12px 12px 0 rgba(255, 255, 255, 0.8),
+    12px 12px 12px 0 rgba(0, 0, 0, 0.6);
+  width: 480px;
+  height: 70px;
+  flex-wrap: nowrap;
+}
+
+nav.light {
+}
+
+button#light-dark {
+  background-color: transparent;
+  border: 0;
 }
