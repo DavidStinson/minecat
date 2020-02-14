@@ -15,6 +15,7 @@ let cellsToBeRevealed = null
 let timer = null
 let cellEls = null
 let firstClick = null
+let pageLoad = 1
 
 /*-----------------------------------------------------------------------------
 ============================= Objects and Classes =============================
@@ -403,8 +404,11 @@ function handleColorModeSwitch() {
 /*================================== Render ==================================*/
 
 function checkUserColorSchemePreference() {
-  if (window.matchMedia('(prefers-color-scheme:dark)').matches) {
-    colorMode.changeColorMode()
+  if (pageLoad) {
+    if (window.matchMedia('(prefers-color-scheme:dark)').matches) {
+      colorMode.changeColorMode()
+      pageLoad = 0
+    }
   }
   preRender()
 }

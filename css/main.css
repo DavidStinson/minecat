@@ -55,7 +55,9 @@ main.dark {
     12px 12px 12px 0 rgba(0, 0, 0, 0.6);
 }
 
-/* Items inside the main container*/
+/*===================== Items inside the main container =====================*/
+
+/* header */
 
 #header {
   grid-area: header;
@@ -87,7 +89,7 @@ main.dark {
 
 #title.dark {
   color: #e3e3e3;
-  text-shadow: 1px 1px 2px gray;
+  text-shadow: 2px 2px 2px gray;
 }
 
 #flag-count {
@@ -96,12 +98,12 @@ main.dark {
   flex-grow: 1;
   font-family: lcdmonobold;
   font-size: x-large;
-  color: #fff5f6;
-  text-shadow: 0 0 2px #000, 0 0 10px #fc1f2c75, 0 0 5px #fc1f2c75,
-    2px 2px 25px #851e2575;
 }
 
 #flag-count.light {
+  color: #fff5f6;
+  text-shadow: 0 0 2px #000, 0 0 10px #fc1f2c75, 0 0 5px #fc1f2c75,
+    2px 2px 25px #851e2575;
 }
 
 #flag-count.dark {
@@ -140,15 +142,41 @@ main.dark {
     inset 2px 2px 5px rgba(0, 0, 0, 0.7);
 }
 
+#mine-cat.dark {
+  background-color: #3e3e3e;
+  box-shadow: -4px -4px 4px 0 rgba(255, 255, 255, 0.3),
+    4px 4px 4px 0 rgba(0, 0, 0, 0.5);
+}
+
+#mine-cat.dark:hover {
+  background-color: #1e1e1e;
+}
+
+#mine-cat.dark:active {
+  background-color: #5e5e5e;
+  box-shadow: -4px -4px 4px 0 rgba(255, 255, 255, 0.3),
+    4px 4px 4px rgba(0, 0, 0, 0.5), inset -2px -2px 5px rgba(255, 255, 255, 0.2),
+    inset 2px 2px 5px rgba(0, 0, 0, 0.7);
+}
+
 #time {
   text-align: center;
   margin: auto;
   flex-grow: 1;
   font-family: lcdmonobold;
   font-size: x-large;
+}
+
+#time.light {
   color: #fff5f6;
   text-shadow: 0 0 2px #000, 0 0 10px #fc1f2c75, 0 0 5px #fc1f2c75,
     2px 2px 25px #851e2575;
+}
+
+#time.dark {
+  color: #fdfdfd;
+  text-shadow: 0 0 2px #001716, 0 0 3px #03edf975, 0 0 5px #03edf975,
+    0 0 8px #03edf975;
 }
 
 #gameboard {
@@ -159,13 +187,11 @@ main.dark {
 }
 
 #gameboard.light {
-  box-shadow: -4px -4px 4px 0 rgba(255, 255, 255, 0.4),
-    4px 4px 4px 0 rgba(0, 0, 0, 0.7);
+  box-shadow: -4px -4px 4px 0 rgba(255, 255, 255, 0.2),
+    4px 4px 4px 0 rgba(0, 0, 0, 0.4);
 }
 
-#edge {
-  grid-area: edge;
-}
+/* cells */
 
 .cell {
   height: 25px;
@@ -350,4 +376,8 @@ input[type='number'] {
   float: left;
   position: fixed;
   z-index: -1;
+}
+
+#edge {
+  grid-area: edge;
 }
