@@ -410,6 +410,7 @@ function preRender() {
       })
     } else {
       cellEls.forEach(cellEl => cellEl.classList.replace('dark', 'light'))
+      lightDarkBtnEl.textContent = 'dark'
       allEls.forEach(el => {
         el.classList.replace('dark', 'light')
       })
@@ -483,5 +484,7 @@ function iLikeToWin() {
   })
   checkForEndGame()
 }
+
+/*================================== init ==================================*/
 
 init()
