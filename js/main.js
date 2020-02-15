@@ -122,31 +122,20 @@ const yayMedia = new Audio('../media/yay.mp3')
 ==================================== Cache ====================================
 -----------------------------------------------------------------------------*/
 
-// Query these elements only to style them.
-const bodyEl = document.querySelector('body')
-const boundingEl = document.querySelector('main')
 // Query these for logic
-const titleEl = document.querySelector('#title')
+const boundingEl = document.querySelector('main')
+const gameboardEl = document.querySelector('#gameboard')
 const flagCountEl = document.querySelector('#flag-count')
 const mineCatEl = document.querySelector('#mine-cat')
 const timeEl = document.querySelector('#time')
-const gameboardEl = document.querySelector('#gameboard')
-const navEl = document.querySelector('.nav')
-const navBtnEl = document.querySelectorAll('.nav-button')
 // Nav bar elements
-const lightDarkBtnEl = document.querySelector('#light-dark-btn')
-const subColumnsBtnEl = document.querySelector('#sub-columns-btn')
 const columnsInputEl = document.querySelector('#columns-input')
-const posColumnsBtnEl = document.querySelector('#pos-columns-btn')
-const subRowsBtnEl = document.querySelector('#sub-rows-btn')
 const rowsInputEl = document.querySelector('#rows-input')
-const posRowsBtnEl = document.querySelector('#pos-rows-btn')
-const subBombsBtnEl = document.querySelector('#sub-bombs-btn')
 const bombsInputEl = document.querySelector('#bombs-input')
-const posBombsBtnEl = document.querySelector('#pos-bombs-btn')
-// Nav bar element only used for style
 const navBarEl = document.querySelector('nav')
-const navBarBtnEls = document.querySelectorAll('.nav-button')
+// Nav bar element only used for style
+const allEls = document.querySelectorAll('*')
+const lightDarkBtnEl = document.querySelector('#light-dark-btn')
 
 /*-----------------------------------------------------------------------------
 =============================== Event Listeners ===============================
@@ -155,13 +144,7 @@ const navBarBtnEls = document.querySelectorAll('.nav-button')
 gameboardEl.addEventListener('click', handleCellClick)
 gameboardEl.addEventListener('auxclick', handleCellAuxClick)
 mineCatEl.addEventListener('click', init)
-lightDarkBtnEl.addEventListener('click', handleColorModeSwitch)
-subColumnsBtnEl.addEventListener('click', handleSubFromInputField)
-posColumnsBtnEl.addEventListener('click', handlePosToInputField)
-subRowsBtnEl.addEventListener('click', handleSubFromInputField)
-posRowsBtnEl.addEventListener('click', handlePosToInputField)
-subBombsBtnEl.addEventListener('click', handleSubFromInputField)
-posBombsBtnEl.addEventListener('click', handlePosToInputField)
+navBarEl.addEventListener('click', handleNavBarClick)
 
 /*-----------------------------------------------------------------------------
 ================================= Functions ===================================
@@ -362,47 +345,47 @@ function handleCellAuxClick(evnt) {
   preRender()
 }
 
-function handleSubFromInputField(evnt) {
+function handleNavBarClick(evnt) {
   let targetBtn = evnt.target.id
-  if (targetBtn === 'sub-columns-btn') {
-    if (!isNaN(parseInt(columnsInputEl.value)) && columns > 12) {
-      columns = parseInt(columnsInputEl.value) + 1
-    }
-  } else if (targetBtn === 'sub-rows-btn') {
-    if (!isNaN(parseInt(rowsInputEl.value)) && rows > 10) {
-      rows = parseInt(rowsInputEl.value) + 1
-    }
-  } else {
-    if (!isNaN(parseInt(bombsInputEl.value)) && bombs > 5) {
-      bombs = parseInt(bombsInputEl.value) - 1
-    }
+  switch (targetBtn) {
+    case 'sub-columns-btn':
+      if (!isNaN(parseInt(columnsInputEl.value)) && columns > 12) {
+        columns = parseInt(columnsInputEl.value) + 1
+      }
+      break
+    case 'sub-rows-btn':
+      if (!isNaN(parseInt(rowsInputEl.value)) && rows > 10) {
+        rows = parseInt(rowsInputEl.value) + 1
+      }
+      break
+    case 'sub-bombs-btn':
+      if (!isNaN(parseInt(bombsInputEl.value)) && bombs > 5) {
+        bombs = parseInt(bombsInputEl.value) - 1
+      }
+      break
+    case 'pos-columns-btn':
+      if (!isNaN(parseInt(columnsInputEl.value)) && columns < 72) {
+        columns = parseInt(columnsInputEl.value) + 3
+      }
+      break
+    case 'pos-rows-btn':
+      if (!isNaN(parseInt(rowsInputEl.value)) && rows < 52) {
+        rows = parseInt(rowsInputEl.value) + 3
+      }
+      break
+    case 'pos-bombs-btn':
+      if (
+        !isNaN(parseInt(bombsInputEl.value)) &&
+        bombs < ((rows - 2) * (columns - 2)) / 2
+      ) {
+        bombs = parseInt(bombsInputEl.value) + 1
+      }
+      break
+    case 'light-dark-btn':
+      colorMode.changeColorMode()
+      break
   }
   preRender()
-}
-
-function handlePosToInputField(evnt) {
-  let targetBtn = evnt.target.id
-  if (targetBtn === 'pos-columns-btn') {
-    if (!isNaN(parseInt(columnsInputEl.value)) && columns < 72) {
-      columns = parseInt(columnsInputEl.value) + 3
-    }
-  } else if (targetBtn === 'pos-rows-btn') {
-    if (!isNaN(parseInt(rowsInputEl.value)) && rows < 52) {
-      rows = parseInt(rowsInputEl.value) + 3
-    }
-  } else {
-    if (
-      !isNaN(parseInt(bombsInputEl.value)) &&
-      bombs < ((rows - 2) * (columns - 2)) / 2
-    ) {
-      bombs = parseInt(bombsInputEl.value) + 1
-    }
-  }
-  preRender()
-}
-
-function handleColorModeSwitch() {
-  colorMode.changeColorMode()
 }
 
 /*================================== Render ==================================*/
@@ -420,35 +403,16 @@ function checkUserColorSchemePreference() {
 function preRender() {
   if (colorMode.change) {
     if (colorMode.dark) {
-      bodyEl.classList.replace('light', 'dark')
-      boundingEl.classList.replace('light', 'dark')
-      titleEl.classList.replace('light', 'dark')
-      flagCountEl.classList.replace('light', 'dark')
-      mineCatEl.classList.replace('light', 'dark')
-      timeEl.classList.replace('light', 'dark')
-      gameboardEl.classList.replace('light', 'dark')
       cellEls.forEach(cellEl => cellEl.classList.replace('light', 'dark'))
-      navBarEl.classList.replace('light', 'dark')
-      lightDarkBtnEl.classList.replace('light', 'dark')
       lightDarkBtnEl.textContent = 'light'
-      navBarBtnEls.forEach(navBarBtnEl =>
-        navBarBtnEl.classList.replace('light', 'dark')
-      )
+      allEls.forEach(el => {
+        el.classList.replace('light', 'dark')
+      })
     } else {
-      bodyEl.classList.replace('dark', 'light')
-      boundingEl.classList.replace('dark', 'light')
-      titleEl.classList.replace('dark', 'light')
-      flagCountEl.classList.replace('dark', 'light')
-      mineCatEl.classList.replace('dark', 'light')
-      timeEl.classList.replace('dark', 'light')
-      gameboardEl.classList.replace('dark', 'light')
       cellEls.forEach(cellEl => cellEl.classList.replace('dark', 'light'))
-      navBarEl.classList.replace('dark', 'light')
-      lightDarkBtnEl.classList.replace('dark', 'light')
-      lightDarkBtnEl.textContent = 'dark'
-      navBarBtnEls.forEach(navBarBtnEl =>
-        navBarBtnEl.classList.replace('dark', 'light')
-      )
+      allEls.forEach(el => {
+        el.classList.replace('dark', 'light')
+      })
     }
     colorMode.change = false
   }
@@ -481,8 +445,8 @@ function render() {
     if (cell.hasFlag) cellEl.textContent = '🚩'
     if (!cell.isRevealed && !cell.hasFlag) cellEl.textContent = ''
   })
-  columnsInputEl.value = parseInt(columns) - 2 + ''
-  rowsInputEl.value = parseInt(rows) - 2 + ''
+  columnsInputEl.value = columns - 2
+  rowsInputEl.value = rows - 2
   bombsInputEl.value = bombs
 }
 
