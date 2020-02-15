@@ -52,11 +52,7 @@ The number of rows, columns, and bombs can be adjusted by using the bar beneath 
 
 ---
 
-<<<<<<< HEAD
-## Ice Box
-=======
 ## Ice Box 🧊
->>>>>>> e6739f65a0188ac060e6541a20998a9aa1331b90
 
 - [x] Add functionality to let user choose rows, columns, and number of bombs
 - [x] Font design
