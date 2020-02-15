@@ -34,7 +34,7 @@ The number of rows, columns, and bombs can be adjusted by using the bar beneath 
 
 ---
 
-## Technologies used
+## Technologies used 📲
 
 - CSS
 - JavaScript
@@ -43,7 +43,7 @@ The number of rows, columns, and bombs can be adjusted by using the bar beneath 
 
 ---
 
-## Credits
+## Credits 🙌
 
 - Uses Animate.css by Daniel Eden to animate cell reveal. Get it from: [GitHub](https://daneden.github.io/animate.css/)
 - Uses Explosion Test by Apenguin73. Get it from: [freesound.org](https://freesound.org/people/Apenguin73/sounds/335152/)
@@ -52,7 +52,11 @@ The number of rows, columns, and bombs can be adjusted by using the bar beneath 
 
 ---
 
+<<<<<<< HEAD
 ## Ice Box
+=======
+## Ice Box 🧊
+>>>>>>> e6739f65a0188ac060e6541a20998a9aa1331b90
 
 - [x] Add functionality to let user choose rows, columns, and number of bombs
 - [x] Font design
