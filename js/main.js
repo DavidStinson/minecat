@@ -147,18 +147,10 @@ navBarEl.addEventListener('click', handleNavBarClick)
 function init() {
   /* 2 rows and columns are added compared to what the user inputs, because the 
 	first and last of each are hidden from the user view*/
-  input.rows = parseInt(rowsInputEl.value) + 2
-  if (input.rows > 52) input.rows = 52
-  if (input.rows < 12 || isNaN(input.rows)) input.rows = 12
-  input.columns = parseInt(columnsInputEl.value) + 2
-  if (input.columns > 72) input.columns = 72
-  if (input.columns < 12 || isNaN(input.columns)) input.columns = 12
-  input.bombs = parseInt(bombsInputEl.value)
-	if (input.bombs > ((input.rows - 2) * 
-	(input.columns - 2)) / 2 || isNaN(input.bombs)) {
-    input.bombs = Math.floor(((input.rows - 2) * (input.columns - 2)) / 2)
-  }
-  if (input.bombs < 5) input.bombs = 5
+  input.rows = validateNumInput(rowsInputEl.value, 8, 50, 12) + 2
+  input.columns = validateNumInput(columnsInputEl.value, 10, 70, 12) + 2
+	input.bombs = validateNumInput(bombsInputEl.value, 5, 
+		((input.rows - 2) * (input.columns - 2)) / 2, 20)
 	board.bombsInPlay = board.flagCount = input.bombs
 	board.rowsInPlay = input.rows
 	board.columnsInPlay = input.columns
@@ -459,6 +451,14 @@ function getRandomIntInclusive(minNum, maxNum) {
   minNum = Math.ceil(minNum)
   maxNum = Math.floor(maxNum)
   return Math.floor(Math.random() * (maxNum - minNum + 1)) + minNum
+}
+
+function validateNumInput(inputVal, lowerBound, upperBound, defaultVal) {
+	inputVal = parseInt(inputVal)
+	if (isNaN(inputVal)) return defaultVal
+	if (inputVal < lowerBound) return lowerBound
+	if (inputVal > upperBound) return upperBound
+	return inputVal
 }
 
 /*============================ Development Tools ============================*/
