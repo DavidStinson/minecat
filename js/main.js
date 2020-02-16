@@ -15,7 +15,7 @@ input = {
 	columns: null,
 	bombs: null,
 	firstClick: null,
-	pageLoad = 1
+	pageLoad: 1
 }
 
 board = {
