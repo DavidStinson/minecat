@@ -323,40 +323,28 @@ function handleCellAuxClick(evnt) {
 }
 
 function handleNavBarClick(evnt) {
-  let targetBtn = evnt.target.id
+	let targetBtn = evnt.target.id
+	let validColsInput = validateNumInput(columnsInputEl.value, 11, 69, 12)
+	let validRowsInput = validateNumInput(rowsInputEl.value, 9, 49, 12)
+	let validBombsInput = validateNumInput(bombsInputEl.value, 5, ((input.rows - 2) * (input.columns - 2)) / 2, 20)
   switch (targetBtn) {
     case 'sub-columns-btn':
-      if (!isNaN(parseInt(columnsInputEl.value)) && input.columns > 12) {
-        input.columns = parseInt(columnsInputEl.value) + 1
-      }
+			input.columns = validColsInput + 1
       break
     case 'sub-rows-btn':
-      if (!isNaN(parseInt(rowsInputEl.value)) && input.rows > 10) {
-        input.rows = parseInt(rowsInputEl.value) + 1
-      }
+			input.rows = validRowsInput + 1
       break
     case 'sub-bombs-btn':
-      if (!isNaN(parseInt(bombsInputEl.value)) && input.bombs > 5) {
-        input.bombs = parseInt(bombsInputEl.value) - 1
-      }
+			input.bombs = validBombsInput - 1
       break
     case 'pos-columns-btn':
-      if (!isNaN(parseInt(columnsInputEl.value)) && input.columns < 72) {
-        input.columns = parseInt(columnsInputEl.value) + 3
-      }
+			input.columns = validColsInput + 3
       break
     case 'pos-rows-btn':
-      if (!isNaN(parseInt(rowsInputEl.value)) && input.rows < 52) {
-        input.rows = parseInt(rowsInputEl.value) + 3
-      }
+			input.rows = validRowsInput + 3
       break
     case 'pos-bombs-btn':
-      if (
-        !isNaN(parseInt(bombsInputEl.value)) &&
-        input.bombs < ((input.rows - 2) * (input.columns - 2)) / 2
-      ) {
-        input.bombs = parseInt(bombsInputEl.value) + 1
-      }
+			input.bombs = validBombsInput + 1
       break
     case 'light-dark-btn':
       colorMode.changeColorMode()
