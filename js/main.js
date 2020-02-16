@@ -11,9 +11,9 @@ let cellEls = null
 -----------------------------------------------------------------------------*/
 
 input = {
-	rows: null,
-	columns: null,
-	bombs: null,
+	rows: 12,
+	columns: 12,
+	bombs: 20,
 	firstClick: null,
 	pageLoad: 1
 }
@@ -98,14 +98,8 @@ var confettiSettings = {
   start_from_edge: true,
   props: ['square', 'circle', 'triangle', 'line'],
   rotate: true,
-  colors: [
-    [62, 62, 62],
-    [245, 245, 245],
-    [138, 62, 59],
-    [209, 95, 71],
-    [70, 143, 158],
-    [20, 43, 61],
-  ],
+  colors: [ [62, 62, 62], [245, 245, 245], [138, 62, 59],
+    [209, 95, 71], [70, 143, 158], [20, 43, 61], ],
 }
 
 const confetti = new ConfettiGenerator(confettiSettings)
@@ -148,13 +142,9 @@ navBarEl.addEventListener('change', handleNavBarInputChange)
 function init() {
   /* 2 rows and columns are added compared to what the user inputs, because the 
 	first and last of each are hidden from the user view*/
-  input.rows = validateNumInput(rowsInputEl.value, 8, 50, 12) + 2
-  input.columns = validateNumInput(columnsInputEl.value, 10, 70, 12) + 2
-	input.bombs = validateNumInput(bombsInputEl.value, 5, 
-		((input.rows - 2) * (input.columns - 2)) / 2, 20)
-	board.bombsInPlay = board.flagCount = input.bombs
-	board.rowsInPlay = input.rows
-	board.columnsInPlay = input.columns
+  board.rowsInPlay = input.rows + 2
+  board.columnsInPlay = input.columns + 2
+	board.flagCount = input.bombsInPlay = input.bombs
   clearInterval(timer)
   board.time = timer = gameOver = cellCount = board.cellsWithBombs = 0
   board.cells = []
@@ -325,40 +315,40 @@ function handleCellAuxClick(evnt) {
 
 function handleNavBarClick(evnt) {
 	let targetBtn = evnt.target.id
-	let validColsInput = validateNumInput(columnsInputEl.value, 11, 69, 12)
-	let validRowsInput = validateNumInput(rowsInputEl.value, 9, 49, 12)
-	let validBombsInput = validateNumInput(bombsInputEl.value, 5, ((input.rows - 2) * (input.columns - 2)) / 2, 20)
   switch (targetBtn) {
     case 'sub-columns-btn':
-			input.columns = validColsInput + 1
+			input.columns--
       break
     case 'sub-rows-btn':
-			input.rows = validRowsInput + 1
+			input.rows--
       break
     case 'sub-bombs-btn':
-			input.bombs = validBombsInput - 1
+			input.bombs--
       break
     case 'pos-columns-btn':
-			input.columns = validColsInput + 3
+			input.columns++
       break
     case 'pos-rows-btn':
-			input.rows = validRowsInput + 3
+			input.rows++
       break
     case 'pos-bombs-btn':
-			input.bombs = validBombsInput + 1
+			input.bombs++
       break
     case 'light-dark-btn':
       colorMode.changeColorMode()
       break
-  }
+	}
+	input.columns = validateNumInput(input.columns, 10, 70, 12)
+	input.rows = validateNumInput(input.rows, 8, 50, 12)
+	input.bombs = validateNumInput(input.bombs, 5, ((input.rows) * (input.columns)) / 2, 20)
   preRender()
 }
 
 function handleNavBarInputChange(){
-	input.columns = validateNumInput(columnsInputEl.value, 10, 70, 12) + 2
-	input.rows = validateNumInput(rowsInputEl.value, 8, 50, 12) + 2
+	input.columns = validateNumInput(columnsInputEl.value, 10, 70, 12)
+	input.rows = validateNumInput(rowsInputEl.value, 8, 50, 12)
 	input.bombs = validateNumInput(bombsInputEl.value, 5, 
-		((input.rows - 2) * (input.columns - 2)) / 2, 20)
+		((input.rows) * (input.columns)) / 2, 20)
 	preRender()
 }
 
@@ -420,8 +410,8 @@ function render() {
     if (cell.hasFlag) cellEl.textContent = '🚩'
     if (!cell.isRevealed && !cell.hasFlag) cellEl.textContent = ''
   })
-  columnsInputEl.value = input.columns - 2
-  rowsInputEl.value = input.rows - 2
+  columnsInputEl.value = input.columns
+  rowsInputEl.value = input.rows
   bombsInputEl.value = input.bombs
 }
 
