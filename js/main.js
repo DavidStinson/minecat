@@ -2,10 +2,6 @@
 ================================== Variables ==================================
 -----------------------------------------------------------------------------*/
 
-let time = null
-let flagCount = null
-let playerCells = null
-let cellCount = null
 let cells = null
 let cellsWithBombs = null
 let gameOver = null
@@ -28,7 +24,9 @@ input = {
 board = {
 	rowsInPlay: null,
 	columnsInPlay: null,
-	bombsInPlay: null
+	bombsInPlay: null,
+	time: null,
+	flagCount: null,
 }
 
 class Cell {
@@ -162,11 +160,10 @@ function init() {
     input.bombs = Math.floor(((input.rows - 2) * (input.columns - 2)) / 2)
   }
   if (input.bombs < 5) input.bombs = 5
-	board.bombsInPlay = flagCount = input.bombs
+	board.bombsInPlay = board.flagCount = input.bombs
 	board.rowsInPlay = input.rows
 	board.columnsInPlay = input.columns
-  time = 0
-  gameOver = cellCount = cellsWithBombs = 0
+  board.time = gameOver = cellCount = cellsWithBombs = 0
   cells = []
   cellEls = []
   input.firstClick = 1
@@ -200,6 +197,7 @@ within the bounding box. Do the same for the width using the columns. */
 }
 
 function cellBuilder() {
+	let cellCount = 0
   for (let row = 0; row < board.rowsInPlay; row++) {
     for (let column = 0; column < board.columnsInPlay; column++) {
       let newCell = new Cell(cellCount, column, row, null, false ,false, false,
@@ -322,10 +320,10 @@ function handleCellClick(evnt) {
 function handleCellAuxClick(evnt) {
   let cell = cells[evnt.target.id]
   if (!gameOver && !cell.isRevealed) {
-    if (flagCount) {
+    if (board.flagCount) {
       cell.hasFlag
-        ? ((cell.hasFlag = false), flagCount++)
-        : ((cell.hasFlag = true), flagCount--)
+        ? ((cell.hasFlag = false), board.flagCount++)
+        : ((cell.hasFlag = true), board.flagCount--)
     } else {
       flagCountEl.classList.add('animated', 'flash')
     }
@@ -409,7 +407,7 @@ function preRender() {
 }
 
 function render() {
-  let flagCountStr = formatNumberWithPadding(flagCount, '0', 3)
+  let flagCountStr = formatNumberWithPadding(board.flagCount, '0', 3)
   flagCountEl.textContent = flagCountStr
   if (gameOver) {
     gameOver === 1
@@ -442,9 +440,9 @@ function render() {
 function renderTime() {
   input.firstClick = 0
   if (!gameOver) {
-    if (time < 999) {
-      time++
-      let timeStr = formatNumberWithPadding(time, '0', 3)
+    if (board.time < 999) {
+      board.time++
+      let timeStr = formatNumberWithPadding(board.time, '0', 3)
       timeEl.textContent = timeStr
     }
   }
