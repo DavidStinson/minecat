@@ -144,7 +144,8 @@ function init() {
 	first and last of each are hidden from the user view*/
   board.rowsInPlay = input.rows + 2
   board.columnsInPlay = input.columns + 2
-	board.flagCount = input.bombsInPlay = input.bombs
+  board.bombsInPlay = input.bombs
+  board.flagCount = board.bombsInPlay
   clearInterval(timer)
   board.time = timer = gameOver = cellCount = board.cellsWithBombs = 0
   board.cells = []
