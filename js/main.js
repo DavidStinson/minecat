@@ -139,6 +139,7 @@ gameboardEl.addEventListener('click', handleCellClick)
 gameboardEl.addEventListener('auxclick', handleCellAuxClick)
 mineCatEl.addEventListener('click', init)
 navBarEl.addEventListener('click', handleNavBarClick)
+navBarEl.addEventListener('change', handleNavBarInputChange)
 
 /*-----------------------------------------------------------------------------
 ================================= Functions ===================================
@@ -351,6 +352,14 @@ function handleNavBarClick(evnt) {
       break
   }
   preRender()
+}
+
+function handleNavBarInputChange(){
+	input.columns = validateNumInput(columnsInputEl.value, 10, 70, 12) + 2
+	input.rows = validateNumInput(rowsInputEl.value, 8, 50, 12) + 2
+	input.bombs = validateNumInput(bombsInputEl.value, 5, 
+		((input.rows - 2) * (input.columns - 2)) / 2, 20)
+	preRender()
 }
 
 /*================================== Render ==================================*/
