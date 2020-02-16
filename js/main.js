@@ -1,10 +1,8 @@
 /*-----------------------------------------------------------------------------
 ================================== Variables ==================================
 -----------------------------------------------------------------------------*/
-let rows = null
-let columns = null
+
 let time = null
-let bombs = null
 let flagCount = null
 let playerCells = null
 let cellCount = null
@@ -14,24 +12,27 @@ let gameOver = null
 let cellsToBeRevealed = null
 let timer = null
 let cellEls = null
-let firstClick = null
 let pageLoad = 1
-let bombsInPlay = null
 
 /*-----------------------------------------------------------------------------
 ============================= Objects and Classes =============================
 -----------------------------------------------------------------------------*/
 
+input = {
+	rows: null,
+	columns: null,
+	bombs: null,
+	firstClick: null,
+}
+
+board = {
+	rowsInPlay: null,
+	columnsInPlay: null,
+	bombsInPlay: null
+}
+
 class Cell {
-  constructor(
-    id,
-    xcor,
-    ycor,
-    hasBomb,
-    hasFlag,
-    hasNeighboringBombs,
-    isRevealed,
-    neighbors
+  constructor(id,xcor,ycor,hasBomb,hasFlag,hasNeighboringBombs,isRevealed,neighbors
   ) {
     this.id = id
     this.xcor = xcor
@@ -43,12 +44,8 @@ class Cell {
     this.neighbors = neighbors
   }
   isEdge() {
-    if (
-      this.xcor === 0 ||
-      this.xcor === columns - 1 ||
-      this.ycor === 0 ||
-      this.ycor == rows - 1
-    ) {
+    if (this.xcor === 0 || this.xcor === board.columnsInPlay - 1 ||
+      this.ycor === 0 || this.ycor == board.rowsInPlay - 1) {
       return true
     }
     return false
@@ -133,7 +130,7 @@ const columnsInputEl = document.querySelector('#columns-input')
 const rowsInputEl = document.querySelector('#rows-input')
 const bombsInputEl = document.querySelector('#bombs-input')
 const navBarEl = document.querySelector('nav')
-// Nav bar element only used for style
+// Elements only used for style
 const allEls = document.querySelectorAll('*')
 const lightDarkBtnEl = document.querySelector('#light-dark-btn')
 
@@ -153,24 +150,26 @@ navBarEl.addEventListener('click', handleNavBarClick)
 function init() {
   /* 2 rows and columns are added compared to what the user inputs, because the 
 	first and last of each are hidden from the user view*/
-  // Don't allow user to set less than 12 columns
-  rows = parseInt(rowsInputEl.value) + 2
-  if (rows > 52) rows = 52
-  if (rows < 12 || isNaN(rows)) rows = 12
-  columns = parseInt(columnsInputEl.value) + 2
-  if (columns > 72) columns = 72
-  if (columns < 12 || isNaN(columns)) columns = 12
-  bombs = parseInt(bombsInputEl.value)
-  if (bombs > ((rows - 2) * (columns - 2)) / 2 || isNaN(columns)) {
-    bombs = ((rows - 2) * (columns - 2)) / 2
+  input.rows = parseInt(rowsInputEl.value) + 2
+  if (input.rows > 52) input.rows = 52
+  if (input.rows < 12 || isNaN(input.rows)) input.rows = 12
+  input.columns = parseInt(columnsInputEl.value) + 2
+  if (input.columns > 72) input.columns = 72
+  if (input.columns < 12 || isNaN(input.columns)) input.columns = 12
+  input.bombs = parseInt(bombsInputEl.value)
+	if (input.bombs > ((input.rows - 2) * 
+	(input.columns - 2)) / 2 || isNaN(input.bombs)) {
+    input.bombs = Math.floor(((input.rows - 2) * (input.columns - 2)) / 2)
   }
-  if (bombs < 5) bombs = 5
-  bombsInPlay = flagCount = bombs
+  if (input.bombs < 5) input.bombs = 5
+	board.bombsInPlay = flagCount = input.bombs
+	board.rowsInPlay = input.rows
+	board.columnsInPlay = input.columns
   time = 0
   gameOver = cellCount = cellsWithBombs = 0
   cells = []
   cellEls = []
-  firstClick = 1
+  input.firstClick = 1
   clearInterval(timer)
   timer = 0
   timeEl.textContent = '000'
@@ -191,35 +190,24 @@ function boardBuilder() {
   /* Determine the height of the bounding box with the number of user facing 
 rows, multiplied by the size of each cell, plus the height of all the elements
 within the bounding box. Do the same for the width using the columns. */
-  boundingEl.style.height = (rows - 2) * 25 + 107 + 4 + 20 + 'px'
-  boundingEl.style.width = (columns - 2) * 25 + 10 + 4 + 20 + 'px'
+  boundingEl.style.height = (board.rowsInPlay - 2) * 25 + 130 + 'px'
+  boundingEl.style.width = (board.columnsInPlay - 2) * 25 + 34 + 'px'
   /* Determine the height of the board with the number of user facing rows,
 	multiplied by the size of each cell. Do the same for the width using the
 	columns */
-  gameboardEl.style.height = (rows - 2) * 25 + 'px'
-  gameboardEl.style.width = (columns - 2) * 25 + 'px'
+  gameboardEl.style.height = (board.rowsInPlay - 2) * 25 + 'px'
+  gameboardEl.style.width = (board.columnsInPlay - 2) * 25 + 'px'
 }
 
 function cellBuilder() {
-  for (let row = 0; row < rows; row++) {
-    for (let column = 0; column < columns; column++) {
-      let newCell = new Cell(
-        cellCount,
-        column,
-        row,
-        null,
-        false,
-        false,
-        false,
+  for (let row = 0; row < board.rowsInPlay; row++) {
+    for (let column = 0; column < board.columnsInPlay; column++) {
+      let newCell = new Cell(cellCount, column, row, null, false ,false, false,
         [
-          cellCount - columns - 1,
-          cellCount - columns,
-          cellCount - columns + 1,
-          cellCount - 1,
-          cellCount + 1,
-          cellCount + columns - 1,
-          cellCount + columns,
-          cellCount + columns + 1,
+					cellCount - board.columnsInPlay - 1, cellCount - board.columnsInPlay,
+					cellCount - board.columnsInPlay + 1, cellCount - 1, cellCount + 1,
+					cellCount + board.columnsInPlay - 1, cellCount + board.columnsInPlay,
+					cellCount + board.columnsInPlay + 1,
         ]
       )
       /* Places cells onto the board, places a bomb in any cell not revealed on
@@ -247,7 +235,7 @@ function cellBuilder() {
 }
 
 function plantBombs() {
-  while (cellsWithBombs < bombsInPlay) {
+  while (cellsWithBombs < board.bombsInPlay) {
     let cellId = getRandomIntInclusive(0, cells.length - 1)
     if (!cells[cellId].hasBomb) {
       cells[cellId].hasBomb = true
@@ -291,7 +279,7 @@ function checkForEndGame() {
       cellsToBeRevealed++
     }
   })
-  if (!gameOver && cellsToBeRevealed === bombsInPlay) {
+  if (!gameOver && cellsToBeRevealed === board.bombsInPlay) {
     gameOver = 1
     confetti.render()
     yayMedia.play()
@@ -308,7 +296,7 @@ function checkForEndGame() {
 /*============================= Event Functions =============================*/
 
 function handleCellClick(evnt) {
-  if (firstClick) {
+  if (input.firstClick) {
     timer = setInterval(renderTime, 1000)
   }
   let cell = cells[evnt.target.id]
@@ -349,36 +337,36 @@ function handleNavBarClick(evnt) {
   let targetBtn = evnt.target.id
   switch (targetBtn) {
     case 'sub-columns-btn':
-      if (!isNaN(parseInt(columnsInputEl.value)) && columns > 12) {
-        columns = parseInt(columnsInputEl.value) + 1
+      if (!isNaN(parseInt(columnsInputEl.value)) && input.columns > 12) {
+        input.columns = parseInt(columnsInputEl.value) + 1
       }
       break
     case 'sub-rows-btn':
-      if (!isNaN(parseInt(rowsInputEl.value)) && rows > 10) {
-        rows = parseInt(rowsInputEl.value) + 1
+      if (!isNaN(parseInt(rowsInputEl.value)) && input.rows > 10) {
+        input.rows = parseInt(rowsInputEl.value) + 1
       }
       break
     case 'sub-bombs-btn':
-      if (!isNaN(parseInt(bombsInputEl.value)) && bombs > 5) {
-        bombs = parseInt(bombsInputEl.value) - 1
+      if (!isNaN(parseInt(bombsInputEl.value)) && input.bombs > 5) {
+        input.bombs = parseInt(bombsInputEl.value) - 1
       }
       break
     case 'pos-columns-btn':
-      if (!isNaN(parseInt(columnsInputEl.value)) && columns < 72) {
-        columns = parseInt(columnsInputEl.value) + 3
+      if (!isNaN(parseInt(columnsInputEl.value)) && input.columns < 72) {
+        input.columns = parseInt(columnsInputEl.value) + 3
       }
       break
     case 'pos-rows-btn':
-      if (!isNaN(parseInt(rowsInputEl.value)) && rows < 52) {
-        rows = parseInt(rowsInputEl.value) + 3
+      if (!isNaN(parseInt(rowsInputEl.value)) && input.rows < 52) {
+        input.rows = parseInt(rowsInputEl.value) + 3
       }
       break
     case 'pos-bombs-btn':
       if (
         !isNaN(parseInt(bombsInputEl.value)) &&
-        bombs < ((rows - 2) * (columns - 2)) / 2
+        input.bombs < ((input.rows - 2) * (input.columns - 2)) / 2
       ) {
-        bombs = parseInt(bombsInputEl.value) + 1
+        input.bombs = parseInt(bombsInputEl.value) + 1
       }
       break
     case 'light-dark-btn':
@@ -446,13 +434,13 @@ function render() {
     if (cell.hasFlag) cellEl.textContent = '🚩'
     if (!cell.isRevealed && !cell.hasFlag) cellEl.textContent = ''
   })
-  columnsInputEl.value = columns - 2
-  rowsInputEl.value = rows - 2
-  bombsInputEl.value = bombs
+  columnsInputEl.value = input.columns - 2
+  rowsInputEl.value = input.rows - 2
+  bombsInputEl.value = input.bombs
 }
 
 function renderTime() {
-  firstClick = 0
+  input.firstClick = 0
   if (!gameOver) {
     if (time < 999) {
       time++
