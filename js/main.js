@@ -2,13 +2,9 @@
 ================================== Variables ==================================
 -----------------------------------------------------------------------------*/
 
-let cells = null
-let cellsWithBombs = null
 let gameOver = null
-let cellsToBeRevealed = null
 let timer = null
 let cellEls = null
-let pageLoad = 1
 
 /*-----------------------------------------------------------------------------
 ============================= Objects and Classes =============================
@@ -19,6 +15,7 @@ input = {
 	columns: null,
 	bombs: null,
 	firstClick: null,
+	pageLoad = 1
 }
 
 board = {
@@ -27,6 +24,8 @@ board = {
 	bombsInPlay: null,
 	time: null,
 	flagCount: null,
+	cells: null,
+	cellsWithBombs: null,
 }
 
 class Cell {
@@ -51,13 +50,13 @@ class Cell {
   countNeighborsWithBombs() {
     let neighborBombCount = 0
     this.neighbors.forEach(neighbor => {
-      if (cells[neighbor].hasBomb) neighborBombCount++
+      if (board.cells[neighbor].hasBomb) neighborBombCount++
     })
     return neighborBombCount
   }
   cascade() {
     this.neighbors.forEach(neighbor => {
-      let cell = cells[neighbor]
+      let cell = board.cells[neighbor]
       if (!cell.isRevealed && !cell.hasFlag) {
         if (cell.hasNeighboringBombs) {
           cellEls[cell.id].classList.add('animated', 'flash')
@@ -163,12 +162,11 @@ function init() {
 	board.bombsInPlay = board.flagCount = input.bombs
 	board.rowsInPlay = input.rows
 	board.columnsInPlay = input.columns
-  board.time = gameOver = cellCount = cellsWithBombs = 0
-  cells = []
+  clearInterval(timer)
+  board.time = timer = gameOver = cellCount = board.cellsWithBombs = 0
+  board.cells = []
   cellEls = []
   input.firstClick = 1
-  clearInterval(timer)
-  timer = 0
   timeEl.textContent = '000'
   mineCatEl.textContent = '😸'
   while (gameboardEl.firstChild) {
@@ -226,26 +224,26 @@ function cellBuilder() {
         cellEls.push(newCellEl)
       }
       // From this point, logic is carried out using the cells array
-      cells.push(newCell)
+      board.cells.push(newCell)
       cellCount++
     }
   }
 }
 
 function plantBombs() {
-  while (cellsWithBombs < board.bombsInPlay) {
-    let cellId = getRandomIntInclusive(0, cells.length - 1)
-    if (!cells[cellId].hasBomb) {
-      cells[cellId].hasBomb = true
-      cellsWithBombs++
+  while (board.cellsWithBombs < board.bombsInPlay) {
+    let cellId = getRandomIntInclusive(0, board.cells.length - 1)
+    if (!board.cells[cellId].hasBomb) {
+      board.cells[cellId].hasBomb = true
+      board.cellsWithBombs++
     }
   }
   /*Prevent the edge case of a 9 bombs within a 3x3 area (or 6 bombs within
 		2x3 area around the edges OR 4 bombs within a 2x2 area in the corners)*/
-  cells.forEach(cell => {
+  board.cells.forEach(cell => {
     if (!cell.isEdge() && cell.hasBomb && cell.countNeighborsWithBombs() == 8) {
       cell.hasBomb = false
-      cellsWithBombs--
+      board.cellsWithBombs--
       //Round and round we go
       plantBombs()
     }
@@ -255,14 +253,15 @@ function plantBombs() {
 function placeNumbers() {
   /* Remove bombs from outside cells, they will interfere with number placement.
 Fill cells with a number and mark them as revealed. We are now done with edges*/
-  cells.forEach(cell => {
+  board.cells.forEach(cell => {
     if (cell.isEdge()) {
       cell.hasBomb = false
       cell.hasNeighboringBombs = 1
       cell.isRevealed = true
     }
-  })
-  cells.forEach(cell => {
+	})
+	/* NOW place numbers in cells */
+  board.cells.forEach(cell => {
     if (!cell.isEdge() && !cell.hasBomb) {
       cell.hasNeighboringBombs = cell.countNeighborsWithBombs()
       //document.getElementById(cell.id).textContent = cell.hasNeighboringBombs
@@ -272,7 +271,7 @@ Fill cells with a number and mark them as revealed. We are now done with edges*/
 
 function checkForEndGame() {
   cellsToBeRevealed = null
-  cells.forEach(cell => {
+  board.cells.forEach(cell => {
     if (!cell.isRevealed) {
       cellsToBeRevealed++
     }
@@ -283,7 +282,7 @@ function checkForEndGame() {
     yayMedia.play()
   }
   if (gameOver) {
-    cells.forEach(cell => {
+    board.cells.forEach(cell => {
       cell.isRevealed = true
       cellEls[cell.id].classList.add('animated', 'flash')
     })
@@ -297,7 +296,7 @@ function handleCellClick(evnt) {
   if (input.firstClick) {
     timer = setInterval(renderTime, 1000)
   }
-  let cell = cells[evnt.target.id]
+  let cell = board.cells[evnt.target.id]
   let cellEl = cellEls[evnt.target.id]
   if (!gameOver && !cell.hasFlag && !cell.isRevealed) {
     if (cell.hasBomb) {
@@ -318,7 +317,7 @@ function handleCellClick(evnt) {
 }
 
 function handleCellAuxClick(evnt) {
-  let cell = cells[evnt.target.id]
+  let cell = board.cells[evnt.target.id]
   if (!gameOver && !cell.isRevealed) {
     if (board.flagCount) {
       cell.hasFlag
@@ -377,10 +376,10 @@ function handleNavBarClick(evnt) {
 /*================================== Render ==================================*/
 
 function checkUserColorSchemePreference() {
-  if (pageLoad) {
+  if (input.pageLoad) {
     if (window.matchMedia('(prefers-color-scheme:dark)').matches) {
       colorMode.changeColorMode()
-      pageLoad = 0
+      input.pageLoad = 0
     }
   }
   preRender()
@@ -415,7 +414,7 @@ function render() {
       : (mineCatEl.textContent = '🙀')
   }
   cellEls.forEach((cellEl, idx) => {
-    let cell = cells[idx]
+    let cell = board.cells[idx]
     if (cell.isRevealed) {
       cellEl.classList.add('revealed')
       if (cell.hasBomb) {
@@ -465,7 +464,7 @@ function getRandomIntInclusive(minNum, maxNum) {
 /*============================ Development Tools ============================*/
 
 function iLikeToWin() {
-  cells.forEach(cell => {
+  board.cells.forEach(cell => {
     if (!cell.hasBomb) cell.isRevealed = true
   })
   checkForEndGame()
