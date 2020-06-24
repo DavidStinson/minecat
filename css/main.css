@@ -20,16 +20,22 @@ body {
   font-family: lcdmonobold;
   margin: 0;
   --bg: #e3e3e3;
+  --inverted-bg: #3e3e3e;
   --text-color: #3e3e3e;
+  --inverted-text-color: #e3e3e3;
   --main-shadow: -1.2rem -1.2rem 1.2rem 0 rgba(255, 255, 255, 0.8),
     1.2rem 1.2rem 1.2rem 0 rgba(0, 0, 0, 0.6);
   --led-text: #fff5f6;
+  --inverted-led-text: #fdfdfd;
   --led-illumination: 0 0 0.2rem #000, 0 0 1rem #fc1f2c75, 0 0 0.5rem #fc1f2c75,
     0.2rem 0.2rem 2.5rem #851e2575;
+  --inverted-led-illumination: 0 0 0.2rem #001716, 0 0 0.3rem #03edf975,
+    0 0 0.5rem #03edf975, 0 0 0.8rem #03edf975;
   --minecat-shadow: -0.4rem -0.4rem 0.4rem 0 rgba(255, 255, 255, 0.6),
     0.4rem 0.4rem 0.4rem 0 rgba(0, 0, 0, 0.5);
   --hover-bg: #f3f3f3;
   --active-bg: #c3c3c3;
+  --invert-active-bg: #2e2e2e;
   --button-active-shadow: -0.4rem -0.4rem 0.4rem 0 rgba(255, 255, 255, 0.6),
     0.4rem 0.4rem 0.4rem rgba(0, 0, 0, 0.5),
     inset -0.2rem -0.2rem 0.5rem rgba(255, 255, 255, 1),
@@ -37,7 +43,9 @@ body {
   --gameboard-shadow: -0.4rem -0.4rem 0.4rem 0 rgba(255, 255, 255, 0.6),
     0.4rem 0.4rem 0.4rem 0 rgba(0, 0, 0, 0.4);
   --cell-shadow: inset 2px 2px 5px rgba(255, 255, 255, 1),
-  inset -2px -2px 5px rgba(0, 0, 0, 0.7);
+    inset -2px -2px 5px rgba(0, 0, 0, 0.7);
+  --cell-active-shadow: inset -2px -2px 5px rgba(255, 255, 255, 0.6),
+    inset 2px 2px 5px rgba(0, 0, 0, 0.4);
   --cell-hover-bg: #f3f3f3;
   --cell-revealed-bg: #c3c3c3;
   /* cell colors */
@@ -54,16 +62,22 @@ body {
 
 body.dark {
   --bg: #3e3e3e;
+  --inverted-bg: #e3e3e3;
   --text-color: #e3e3e3;
+  --inverted-text-color: #3e3e3e;
   --main-shadow: -1.2rem -1.2rem 1.2rem 0 rgba(255, 255, 255, 0.3),
     1.2rem 1.2rem 1.2rem 0 rgba(0, 0, 0, 0.6);
   --led-text: #fdfdfd;
+  --inverted-led-text: #fff5f6;
   --led-illumination: 0 0 0.2rem #001716, 0 0 0.3rem #03edf975,
     0 0 0.5rem #03edf975, 0 0 0.8rem #03edf975;
+  --inverted-led-illumination: 0 0 0.2rem #000, 0 0 1rem #fc1f2c75,
+    0 0 0.5rem #fc1f2c75, 0.2rem 0.2rem 2.5rem #851e2575;
   --minecat-shadow: -0.4rem -0.4rem 0.4rem 0 rgba(255, 255, 255, 0.3),
     0.4rem 0.4rem 0.4rem 0 rgba(0, 0, 0, 0.5);
   --hover-bg: #1e1e1e;
   --active-bg: #5e5e5e;
+  --invert-active-bg: #c3c3c3;
   --button-active-shadow: -0.4rem -0.4rem 0.4rem 0 rgba(255, 255, 255, 0.3),
     0.4rem 0.4rem 0.4rem rgba(0, 0, 0, 0.5),
     inset -0.2rem -0.2rem 0.5rem rgba(255, 255, 255, 0.2),
@@ -71,7 +85,9 @@ body.dark {
   --gameboard-shadow: -0.4rem -0.4rem 0.4rem 0 rgba(255, 255, 255, 0.2),
     0.4rem 0.4rem 0.4rem 0 rgba(0, 0, 0, 0.3);
   --cell-shadow: inset 2px 2px 5px rgba(255, 255, 255, 0.4),
-  inset -2px -2px 5px rgba(0, 0, 0, 0.3);
+    inset -2px -2px 5px rgba(0, 0, 0, 0.3);
+  --cell-active-shadow: inset -2px -2px 5px rgba(255, 255, 255, 0.6),
+    inset 2px 2px 5px rgba(0, 0, 0, 0.4);
   --cell-hover-bg: #7e7e7e;
   --cell-revealed-bg: #a3a3a3;
   /* cell colors */
@@ -99,6 +115,7 @@ body.dark {
   background-color: var(--bg);
   box-shadow: var(--main-shadow);
   border-radius: 2rem;
+  color: var(--text-color);
 }
 
 /*============================ The main container ===========================*/
@@ -122,12 +139,6 @@ body.dark {
   grid-area: header;
   display: flex;
   flex-direction: column;
-  /* display: grid;
-  grid-template-columns: auto;
-  grid-template-rows: 50px 35px;
-  grid-template-areas:
-    "title"
-    "sub-head"; */
 }
 
 .title {
@@ -135,7 +146,6 @@ body.dark {
   font-family: lcdmonobold;
   font-size: 4rem;
   height: 5rem;
-  color: var(--text-color);
   text-shadow: 0.2rem 0.2rem 0.2rem gray;
 }
 
@@ -197,11 +207,13 @@ body.dark {
   width: 2.5rem;
   border: 0;
   margin: 0;
+  color: #2e2e2e;
+  font-family: sans-serif;
+  font-size: 1.6rem;
   line-height: 2.5rem;
   vertical-align: center;
   text-align: center;
   cursor: pointer;
-  font-family: sans-serif;
   background-color: var(--bg);
   box-shadow: var(--cell-shadow);
 }
@@ -210,11 +222,15 @@ body.dark {
   background-color: var(--cell-hover-bg);
 }
 
+.cell:active {
+  background-color: var(--active-bg);
+  box-shadow: var(--cell-active-shadow);
+}
+
 .cell.revealed {
   cursor: not-allowed;
   background-color: var(--active-bg);
-  box-shadow: inset -2px -2px 5px rgba(255, 255, 255, .6),
-    inset 2px 2px 5px rgba(0, 0, 0, 0.4);
+  box-shadow: var(--cell-active-shadow);
 }
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ cell numbers ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
@@ -253,74 +269,37 @@ body.dark {
 
 /*============================ The nav container ============================*/
 
-nav {
+.nav {
   grid-area: nav;
   margin: auto;
   display: flex;
   justify-content: flex-start;
-  border-radius: 20px;
-
-  width: 480px;
-  height: 70px;
+  width: 48rem;
+  height: 7rem;
   flex-wrap: nowrap;
   font-family: lcdmonobold;
 }
 
-nav.light {
-  background-color: #e3e3e3;
-  box-shadow: -12px -12px 12px 0 rgba(255, 255, 255, 0.8),
-    12px 12px 12px 0 rgba(0, 0, 0, 0.6);
-}
-
-nav.dark {
-  background-color: #3e3e3e;
-  box-shadow: -12px -12px 12px 0 rgba(255, 255, 255, 0.3),
-    12px 12px 12px 0 rgba(0, 0, 0, 0.6);
-  color: #e3e3e3;
-}
-
-/* Light/Dark Button */
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~ light/dark button ~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 #light-dark-btn {
   border: 0;
-  width: 80px;
-  border-radius: 20px 0px 0px 20px;
+  width: 8rem;
+  border-radius: 2rem 0 0 2rem;
   font-size: x-large;
   font-family: lcdmonobold;
+  background-color: var(--inverted-bg);
+  color: var(--inverted-text-color);
 }
 
-#light-dark-btn.light {
-  background-color: #3e3e3e;
-  color: #fdfdfd;
+#light-dark-btn:hover {
+  color: var(--inverted-led-text);
+  text-shadow: var(--inverted-led-illumination);
 }
 
-#light-dark-btn.light:hover {
-  color: #fdfdfd;
-  text-shadow: 0 0 2px #001716, 0 0 3px #03edf975, 0 0 5px #03edf975,
-    0 0 8px #03edf975;
-}
-
-#light-dark-btn.light:active {
-  background-color: #c3c3c3;
-  box-shadow: inset -2px -2px 5px rgba(255, 255, 255, 1),
-    inset 2px 2px 5px rgba(0, 0, 0, 0.7);
-}
-
-#light-dark-btn.dark {
-  background-color: #e3e3e3;
-  color: #3e3e3e;
-}
-
-#light-dark-btn.dark:hover {
-  color: #fff5f6;
-  text-shadow: 0 0 2px #000, 0 0 10px #fc1f2c75, 0 0 5px #fc1f2c75,
-    2px 2px 25px #851e2575;
-}
-
-#light-dark-btn.dark:active {
-  background-color: #939393;
-  box-shadow: inset -2px -2px 5px rgba(255, 255, 255, 1),
-    inset 2px 2px 5px rgba(0, 0, 0, 0.7);
+#light-dark-btn:active {
+  background-color: var(--invert-active-bg);
+  box-shadow: var(--cell-active-shadow);
 }
 
 /* Nav buttons */
