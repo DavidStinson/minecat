@@ -103,8 +103,8 @@ var confettiSettings = {
 }
 
 const confetti = new ConfettiGenerator(confettiSettings)
-const explosionMedia = new Audio('../media/audio/explosion.wav')
-const yayMedia = new Audio('../media/audio/yay.mp3')
+const explosionMedia = new Audio('../assets/audio/explosion.wav')
+const yayMedia = new Audio('../assets/audio/yay.mp3')
 
 /*-----------------------------------------------------------------------------
 ==================================== Cache ====================================
