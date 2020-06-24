@@ -9,6 +9,7 @@
   src: url("lcdbold.woff2") format("woff2"), url("lcdbold.woff") format("woff");
   font-weight: normal;
   font-style: normal;
+  font-display: swap;
 }
 
 :root {
@@ -172,7 +173,7 @@ body.dark {
   text-align: center;
 }
 
-#mine-cat {
+#minecat {
   margin: auto;
   font-size: 2.3rem;
   border: 0;
@@ -182,11 +183,11 @@ body.dark {
   box-shadow: var(--minecat-shadow);
 }
 
-#mine-cat:hover {
+#minecat:hover {
   background-color: var(--hover-bg);
 }
 
-#mine-cat:active {
+#minecat:active {
   background-color: var(--active-bg);
   box-shadow: var(--button-active-shadow);
 }

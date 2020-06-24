@@ -114,7 +114,7 @@ const yayMedia = new Audio('../media/yay.mp3')
 const boundingEl = document.querySelector('main')
 const gameboardEl = document.querySelector('#gameboard')
 const flagCountEl = document.querySelector('#flag-count')
-const mineCatEl = document.querySelector('#mine-cat')
+const mineCatEl = document.querySelector('#minecat')
 const timeEl = document.querySelector('#time')
 // Nav bar elements
 const columnsInputEl = document.querySelector('#columns-input')
@@ -122,7 +122,7 @@ const rowsInputEl = document.querySelector('#rows-input')
 const bombsInputEl = document.querySelector('#bombs-input')
 const navBarEl = document.querySelector('nav')
 // Elements only used for style
-const allEls = document.querySelectorAll('*')
+const body = document.querySelector('body')
 const lightDarkBtnEl = document.querySelector('#light-dark-btn')
 
 /*-----------------------------------------------------------------------------
@@ -365,17 +365,11 @@ function checkUserColorSchemePreference() {
 function preRender() {
   if (colorMode.change) {
     if (colorMode.dark) {
-      cellEls.forEach(cellEl => cellEl.classList.replace('light', 'dark'))
       lightDarkBtnEl.textContent = 'light'
-      allEls.forEach(el => {
-        el.classList.replace('light', 'dark')
-      })
+      body.classList.replace('light', 'dark')
     } else {
-      cellEls.forEach(cellEl => cellEl.classList.replace('dark', 'light'))
       lightDarkBtnEl.textContent = 'dark'
-      allEls.forEach(el => {
-        el.classList.replace('dark', 'light')
-      })
+      body.classList.replace('dark', 'light')
     }
     colorMode.change = false
   }
