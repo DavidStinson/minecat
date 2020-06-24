@@ -24,15 +24,31 @@ body {
   --main-shadow: -1.2rem -1.2rem 1.2rem 0 rgba(255, 255, 255, 0.8),
     1.2rem 1.2rem 1.2rem 0 rgba(0, 0, 0, 0.6);
   --led-text: #fff5f6;
-  --led-illumination: 0 0 2px #000, 0 0 10px #fc1f2c75, 0 0 5px #fc1f2c75,
-    2px 2px 25px #851e2575;
-  --minecat-shadow: -4px -4px 4px 0 rgba(255, 255, 255, 0.6),
-    4px 4px 4px 0 rgba(0, 0, 0, 0.5);
+  --led-illumination: 0 0 0.2rem #000, 0 0 1rem #fc1f2c75, 0 0 0.5rem #fc1f2c75,
+    0.2rem 0.2rem 2.5rem #851e2575;
+  --minecat-shadow: -0.4rem -0.4rem 0.4rem 0 rgba(255, 255, 255, 0.6),
+    0.4rem 0.4rem 0.4rem 0 rgba(0, 0, 0, 0.5);
   --hover-bg: #f3f3f3;
   --active-bg: #c3c3c3;
-  --active-shadow: -4px -4px 4px 0 rgba(255, 255, 255, 0.6),
-    4px 4px 4px rgba(0, 0, 0, 0.5), inset -2px -2px 5px rgba(255, 255, 255, 1),
-    inset 2px 2px 5px rgba(0, 0, 0, 0.7);
+  --button-active-shadow: -0.4rem -0.4rem 0.4rem 0 rgba(255, 255, 255, 0.6),
+    0.4rem 0.4rem 0.4rem rgba(0, 0, 0, 0.5),
+    inset -0.2rem -0.2rem 0.5rem rgba(255, 255, 255, 1),
+    inset 0.2rem 0.2rem 0.5rem rgba(0, 0, 0, 0.7);
+  --gameboard-shadow: -0.4rem -0.4rem 0.4rem 0 rgba(255, 255, 255, 0.6),
+    0.4rem 0.4rem 0.4rem 0 rgba(0, 0, 0, 0.4);
+  --cell-shadow: inset 2px 2px 5px rgba(255, 255, 255, 1),
+  inset -2px -2px 5px rgba(0, 0, 0, 0.7);
+  --cell-hover-bg: #f3f3f3;
+  --cell-revealed-bg: #c3c3c3;
+  /* cell colors */
+  --cell-bg-1: #f2acab;
+  --cell-bg-2: #ec8382;
+  --cell-bg-3: #e65958;
+  --cell-bg-4: #e0302e;
+  --cell-bg-5: #dd1c1a;
+  --cell-bg-6: #c91a18;
+  --cell-bg-7: #b51716;
+  --cell-bg-8: #a11513;
   background-color: var(--bg);
 }
 
@@ -42,15 +58,31 @@ body.dark {
   --main-shadow: -1.2rem -1.2rem 1.2rem 0 rgba(255, 255, 255, 0.3),
     1.2rem 1.2rem 1.2rem 0 rgba(0, 0, 0, 0.6);
   --led-text: #fdfdfd;
-  --led-illumination: 0 0 2px #001716, 0 0 3px #03edf975, 0 0 5px #03edf975,
-    0 0 8px #03edf975;
-  --minecat-shadow: -4px -4px 4px 0 rgba(255, 255, 255, 0.3),
-    4px 4px 4px 0 rgba(0, 0, 0, 0.5);
+  --led-illumination: 0 0 0.2rem #001716, 0 0 0.3rem #03edf975,
+    0 0 0.5rem #03edf975, 0 0 0.8rem #03edf975;
+  --minecat-shadow: -0.4rem -0.4rem 0.4rem 0 rgba(255, 255, 255, 0.3),
+    0.4rem 0.4rem 0.4rem 0 rgba(0, 0, 0, 0.5);
   --hover-bg: #1e1e1e;
   --active-bg: #5e5e5e;
-  --active-shadow: -4px -4px 4px 0 rgba(255, 255, 255, 0.3),
-    4px 4px 4px rgba(0, 0, 0, 0.5), inset -2px -2px 5px rgba(255, 255, 255, 0.2),
-    inset 2px 2px 5px rgba(0, 0, 0, 0.7);
+  --button-active-shadow: -0.4rem -0.4rem 0.4rem 0 rgba(255, 255, 255, 0.3),
+    0.4rem 0.4rem 0.4rem rgba(0, 0, 0, 0.5),
+    inset -0.2rem -0.2rem 0.5rem rgba(255, 255, 255, 0.2),
+    inset 0.2rem 0.2rem 0.5rem rgba(0, 0, 0, 0.7);
+  --gameboard-shadow: -0.4rem -0.4rem 0.4rem 0 rgba(255, 255, 255, 0.2),
+    0.4rem 0.4rem 0.4rem 0 rgba(0, 0, 0, 0.3);
+  --cell-shadow: inset 2px 2px 5px rgba(255, 255, 255, 0.4),
+  inset -2px -2px 5px rgba(0, 0, 0, 0.3);
+  --cell-hover-bg: #7e7e7e;
+  --cell-revealed-bg: #a3a3a3;
+  /* cell colors */
+  --cell-bg-1: #b9ecfa;
+  --cell-bg-2: #8bdff7;
+  --cell-bg-3: #5dd3f4;
+  --cell-bg-4: #46ccf3;
+  --cell-bg-5: #18c0f0;
+  --cell-bg-6: #01aada;
+  --cell-bg-7: #0199c4;
+  --cell-bg-8: #0188ae;
 }
 
 /*=============================================================================
@@ -145,143 +177,81 @@ body.dark {
 
 #mine-cat:active {
   background-color: var(--active-bg);
-  box-shadow: var(--active-shadow);
+  box-shadow: var(--button-active-shadow);
 }
+
+/*-------------------------------- gameboard --------------------------------*/
 
 #gameboard {
   grid-area: gameboard;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  box-shadow: var(--gameboard-shadow);
 }
 
-#gameboard.light {
-  box-shadow: -4px -4px 4px 0 rgba(255, 255, 255, 0.6),
-    4px 4px 4px 0 rgba(0, 0, 0, 0.4);
-}
-
-#gameboard.dark {
-  box-shadow: -4px -4px 4px 0 rgba(255, 255, 255, 0.2),
-    4px 4px 4px 0 rgba(0, 0, 0, 0.3);
-}
-
-/* cells */
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ cells ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 .cell {
-  height: 25px;
-  width: 25px;
+  height: 2.5rem;
+  width: 2.5rem;
   border: 0;
   margin: 0;
-  line-height: 25px;
+  line-height: 2.5rem;
   vertical-align: center;
   text-align: center;
   cursor: pointer;
   font-family: sans-serif;
+  background-color: var(--bg);
+  box-shadow: var(--cell-shadow);
+}
+
+.cell:hover {
+  background-color: var(--cell-hover-bg);
 }
 
 .cell.revealed {
   cursor: not-allowed;
-}
-
-.cell.light {
-  background-color: #e3e3e3;
-  box-shadow: inset 2px 2px 5px rgba(255, 255, 255, 1),
-    inset -2px -2px 5px rgba(0, 0, 0, 0.7);
-}
-
-.cell.light:hover {
-  background-color: #f3f3f3;
-}
-
-.cell.revealed.light {
-  box-shadow: inset -2px -2px 5px rgba(255, 255, 255, 1),
+  background-color: var(--active-bg);
+  box-shadow: inset -2px -2px 5px rgba(255, 255, 255, .6),
     inset 2px 2px 5px rgba(0, 0, 0, 0.4);
-  background-color: #c3c3c3;
 }
 
-.cell.dark {
-  background-color: #3e3e3e;
-  box-shadow: inset 2px 2px 5px rgba(255, 255, 255, 0.5),
-    inset -2px -2px 5px rgba(0, 0, 0, 0.3);
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ cell numbers ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+.cell.num1 {
+  background-color: var(--cell-bg-1);
 }
 
-.cell.dark:hover {
-  background-color: #7e7e7e;
+.cell.num2 {
+  background-color: var(--cell-bg-2);
 }
 
-.cell.revealed.dark {
-  box-shadow: inset -2px -2px 5px rgba(255, 255, 255, 1),
-    inset 2px 2px 5px rgba(0, 0, 0, 0.4);
-  background-color: #a3a3a3;
+.cell.num3 {
+  background-color: var(--cell-bg-3);
 }
 
-/* Cell Numbers */
-
-.cell.light.num1.revealed {
-  background-color: #f2acab;
+.cell.num4 {
+  background-color: var(--cell-bg-4);
 }
 
-.cell.light.num2.revealed {
-  background-color: #ec8382;
+.cell.num5 {
+  background-color: var(--cell-bg-5);
 }
 
-.cell.light.num3.revealed {
-  background-color: #e65958;
+.cell.num6 {
+  background-color: var(--cell-bg-6);
 }
 
-.cell.light.num4.revealed {
-  background-color: #e0302e;
+.cell.num7 {
+  background-color: var(--cell-bg-7);
 }
 
-.cell.light.num5.revealed {
-  background-color: #dd1c1a;
+.cell.num8 {
+  background-color: var(--cell-bg-8);
 }
 
-.cell.light.num6.revealed {
-  background-color: #c91a18;
-}
-
-.cell.light.num7.revealed {
-  background-color: #b51716;
-}
-
-.cell.light.num8.revealed {
-  background-color: #a11513;
-}
-
-.cell.dark.num1.revealed {
-  background-color: #b9ecfa;
-}
-
-.cell.dark.num2.revealed {
-  background-color: #8bdff7;
-}
-
-.cell.dark.num3.revealed {
-  background-color: #5dd3f4;
-}
-
-.cell.dark.num4.revealed {
-  background-color: #46ccf3;
-}
-
-.cell.dark.num5.revealed {
-  background-color: #18c0f0;
-}
-
-.cell.dark.num6.revealed {
-  background-color: #01aada;
-}
-
-.cell.dark.num7.revealed {
-  background-color: #0199c4;
-}
-
-.cell.dark.num8.revealed {
-  background-color: #0188ae;
-}
-
-/*=================================== NAV ===================================*/
+/*============================ The nav container ============================*/
 
 nav {
   grid-area: nav;
@@ -439,8 +409,4 @@ input[type="number"] {
   float: left;
   position: fixed;
   z-index: -1;
-}
-
-#edge {
-  grid-area: edge;
 }

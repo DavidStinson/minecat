@@ -201,9 +201,6 @@ function cellBuilder() {
         let newCellEl = document.createElement('div')
         newCellEl.setAttribute('id', cellCount)
         newCellEl.classList.add('cell')
-        colorMode.dark
-          ? newCellEl.classList.add('dark')
-          : newCellEl.classList.add('light')
         gameboardEl.appendChild(newCellEl)
         cellEls.push(newCellEl)
       }
