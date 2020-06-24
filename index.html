@@ -4,7 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <link rel="stylesheet" href="css/font.css" />
+    <meta
+      name="description"
+      content="Minecat is a minesweeper re-creation. Save the cat by avoiding the mines!"
+    />
     <link rel="stylesheet" href="css/animate.css" />
     <link rel="stylesheet" href="css/main.css" />
     <script defer src="js/confetti.min.js"></script>
@@ -30,8 +33,8 @@
       <nav class="nav sub-container">
         <button id="light-dark-btn">Dark</button>
         <button id="sub-columns-btn" class="nav-button">-</button>
-        <div class="nav-cell">
-          <p class="nav-text">Columns</p>
+        <label class="nav-text"
+          >Columns
           <input
             value="12"
             class="nav-input"
@@ -40,12 +43,11 @@
             required
             min="10"
             max="70"
-          />
-        </div>
+        /></label>
         <button id="pos-columns-btn" class="nav-button divider">+</button>
         <button id="sub-rows-btn" class="nav-button">-</button>
-        <div class="nav-cell">
-          <p class="nav-text">Rows</p>
+        <label class="nav-text"
+          >Rows
           <input
             value="12"
             id="rows-input"
@@ -54,12 +56,11 @@
             required
             min="8"
             max="50"
-          />
-        </div>
+        /></label>
         <button id="pos-rows-btn" class="nav-button divider">+</button>
         <button id="sub-bombs-btn" class="nav-button">-</button>
-        <div class="nav-cell">
-          <p class="nav-text">Bombs</p>
+        <label class="nav-text"
+          >Bombs
           <input
             value="20"
             id="bombs-input"
@@ -67,8 +68,7 @@
             type="number"
             required
             min="5"
-          />
-        </div>
+        /></label>
         <button id="pos-bombs-btn" class="nav-button">+</button>
       </nav>
       <footer>

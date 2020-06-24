@@ -59,12 +59,12 @@ class Cell {
       let cell = board.cells[neighbor]
       if (!cell.isRevealed && !cell.hasFlag) {
         if (cell.hasNeighboringBombs) {
-          cellEls[cell.id].classList.add('animated', 'flash')
+          cellEls[cell.id].classList.add('animate__animated', 'animate__flash')
           cell.isRevealed = true
         }
         if (!cell.hasNeighboringBombs) {
           cell.isRevealed = true
-          cellEls[cell.id].classList.add('animated', 'flash')
+          cellEls[cell.id].classList.add('animate__animated', 'animate__flash')
           //Round and round we go
           cell.cascade()
         }
@@ -265,7 +265,7 @@ function checkForEndGame() {
   if (gameOver) {
     board.cells.forEach(cell => {
       cell.isRevealed = true
-      cellEls[cell.id].classList.add('animated', 'flash')
+      cellEls[cell.id].classList.add('animate__animated', 'animate__flash')
     })
   }
   preRender()
@@ -282,15 +282,15 @@ function handleCellClick(evnt) {
   if (!gameOver && !cell.hasFlag && !cell.isRevealed) {
     if (cell.hasBomb) {
       cell.isRevealed = true
-      cellEl.classList.add('animated', 'flash')
+      cellEl.classList.add('animate__animated', 'animate__flash')
       explosionMedia.play()
       gameOver = -1
     } else if (cell.hasNeighboringBombs) {
       cell.isRevealed = true
-      cellEl.classList.add('animated', 'flash')
+      cellEl.classList.add('animate__animated', 'animate__flash')
     } else {
       cell.isRevealed = true
-      cellEl.classList.add('animated', 'flash')
+      cellEl.classList.add('animate__animated', 'animate__flash')
       cell.cascade()
     }
     checkForEndGame()
@@ -305,7 +305,7 @@ function handleCellAuxClick(evnt) {
         ? ((cell.hasFlag = false), board.flagCount++)
         : ((cell.hasFlag = true), board.flagCount--)
     } else {
-      flagCountEl.classList.add('animated', 'flash')
+      flagCountEl.classList.add('animate__animated', 'animate__flash')
     }
   }
   preRender()
