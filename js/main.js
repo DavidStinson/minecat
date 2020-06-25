@@ -89,7 +89,6 @@ let colorMode = {
   dark: 0,
   light: 1,
   change: false,
-  colorStr: "light",
   changeColorMode: function () {
     if (this.dark) {
       this.light = 1;
@@ -274,13 +273,12 @@ Fill cells with a number and mark them as revealed. We are now done with edges*/
   board.cells.forEach((cell) => {
     if (!cell.isEdge() && !cell.hasBomb) {
       cell.hasNeighboringBombs = cell.countNeighborsWithBombs();
-      //document.getElementById(cell.id).textContent = cell.hasNeighboringBombs
     }
   });
 }
 
 function checkForEndGame() {
-  cellsToBeRevealed = null;
+  cellsToBeRevealed = 0;
   board.cells.forEach((cell) => {
     if (!cell.isRevealed) {
       cellsToBeRevealed++;
