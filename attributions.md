@@ -2,7 +2,7 @@
 
 ### While the below disclaimers are technically required by their license-holders I would like to also sincerely thank all the creators whose work makes this site look great. Thank you!
 
-Minecat uses the Roboto LCD Mono Bold font created by Samuel Reynolds available from [dafont](https://www.dafont.com/lcd-lcd-mono.font). The font is licensed by Google under a Standard Font License avaliable [here](https://minecat.davidstinson.dev/assets/misc/lcdbold_license.md). The font is presented here unmodified. Samuel Reynolds is not associated with me in any way and does not endorse me, or this site.
+Minecat uses the Roboto LCD Mono Bold font created by Samuel Reynolds available from [dafont](https://www.dafont.com/lcd-lcd-mono.font). The font is licensed under a Standard Font License avaliable [here](https://minecat.davidstinson.dev/assets/misc/lcdbold_license.md). The font is presented here unmodified. Samuel Reynolds is not associated with me in any way and does not endorse me, or this site.
 
 ### Additionally...
 
