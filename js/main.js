@@ -365,8 +365,8 @@ function handleNavBarClick(evnt) {
       colorMode.changeColorMode();
       break;
   }
-  input.columns = validateNumInput(input.columns, 10, 70, 12);
-  input.rows = validateNumInput(input.rows, 8, 50, 12);
+  input.columns = validateNumInput(input.columns, 8, 40, 12);
+  input.rows = validateNumInput(input.rows, 8, 30, 12);
   input.bombs = validateNumInput(
     input.bombs,
     5,
@@ -377,8 +377,8 @@ function handleNavBarClick(evnt) {
 }
 
 function handleNavBarInputChange() {
-  input.columns = validateNumInput(columnsInputEl.value, 10, 70, 12);
-  input.rows = validateNumInput(rowsInputEl.value, 8, 50, 12);
+  input.columns = validateNumInput(columnsInputEl.value, 8, 40, 12);
+  input.rows = validateNumInput(rowsInputEl.value, 8, 30, 12);
   input.bombs = validateNumInput(
     bombsInputEl.value,
     5,
