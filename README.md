@@ -23,7 +23,7 @@ The number of rows, columns, and bombs can be adjusted by using the bar beneath 
 
 ## Credits 🙌
 
-- Check out the [Attributions](https://github.com/DavidStinson/minecat/blob/main/Attributations.md).
+- Check out the [Attributions](https://github.com/DavidStinson/minecat/blob/main/attributions.md).
 
 ---
 
