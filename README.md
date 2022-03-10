@@ -6,11 +6,7 @@ Minecat is a Minesweeper re-creation! Cells on the board can be clicked, which w
 
 The number of rows, columns, and bombs can be adjusted by using the bar beneath the play board.
 
----
-
 ## [Play the game here](https://minecat.davidstinson.dev)
-
----
 
 ## Technologies used 💾
 
@@ -19,13 +15,9 @@ The number of rows, columns, and bombs can be adjusted by using the bar beneath 
 - HTML
 - git
 
----
-
 ## Credits 🙌
 
 - Check out the [Attributions](https://github.com/DavidStinson/minecat/blob/main/attributions.md).
-
----
 
 ## Recent Changes 🧹
 
