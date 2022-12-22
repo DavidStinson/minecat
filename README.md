@@ -13,7 +13,7 @@ The number of rows, columns, and bombs can be adjusted by using the bar beneath 
 - CSS
 - JavaScript
 - HTML
-- git
+- Git
 
 ## Credits 🙌
 
