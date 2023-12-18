@@ -23,7 +23,7 @@ The number of rows, columns, and bombs can be adjusted by using the bar beneath 
 
 - Refactored CSS, reducing file size by almost a quarter while simultaneously allowing for easier modification in the future.
 - Made big changes to how light and dark mode interacts with the DOM, reducing the number of items held in the cache, massively improving memory performance.
-- Changes around the number of columns and rows avaiable to improve performance.
+- Changes around the number of columns and rows available to improve performance.
 
 ## Ice Box 🧊
 
